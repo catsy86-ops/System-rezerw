@@ -1,13 +1,15 @@
 {
   "settings": {
-    "businessName": "naŁuczniczej",
-    "businessEmail": "kontakt@naluczniczej.pl",
+    "businessName": "uFisza",
+    "businessEmail": "kontakt@ufisza.pl",
     "businessPhone": "+48 91 123 45 67",
-    "businessAddress": "ul. Łucznicza 12, 30-001 Kraków",
+    "businessAddress": "ul. Łucznicza 43, 71-472 Szczecin",
     "openTime": "08:00",
     "closeTime": "20:00",
     "slotInterval": 30,
+    "bufferTime": 15,
     "workingDays": [1, 2, 3, 4, 5, 6],
+    "workingHoursExceptions": [],
     "currency": "PLN",
     "timezone": "Europe/Warsaw"
   }

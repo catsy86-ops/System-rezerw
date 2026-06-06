@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 
     const services = getAllServices();
     services.push(service);
-    saveAllServices(services);
+    await saveAllServices(services);
 
     return NextResponse.json({ success: true, data: service }, { status: 201 });
   } catch {

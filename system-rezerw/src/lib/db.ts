@@ -14,13 +14,48 @@ function getFilePath(filename: string): string {
 
 export function readJson<T>(filename: string): T {
   const filePath = getFilePath(filename);
+  if (!fs.existsSync(filePath)) {
+    // Return default empty structures if file doesn't exist
+    if (filename === 'rezerwacje.json') return { reservations: [] } as unknown as T;
+    if (filename === 'uslugi.json') return { services: [] } as unknown as T;
+    if (filename === 'klienci.json') return { clients: [] } as unknown as T;
+    if (filename === 'ustawienia.json') return { settings: {} } as unknown as T;
+    return {} as T;
+  }
   const raw = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw) as T;
+  try {
+    return JSON.parse(raw) as T;
+  } catch (e) {
+    console.error(`Error parsing ${filename}:`, e);
+    // Return empty if corrupted
+    if (filename === 'rezerwacje.json') return { reservations: [] } as unknown as T;
+    if (filename === 'uslugi.json') return { services: [] } as unknown as T;
+    if (filename === 'klienci.json') return { clients: [] } as unknown as T;
+    return {} as T;
+  }
 }
 
-export function writeJson<T>(filename: string, data: T): void {
+// Simple in-memory lock to prevent concurrent writes in the same process
+const locks: Record<string, Promise<void>> = {};
+
+export async function writeJson<T>(filename: string, data: T): Promise<void> {
   const filePath = getFilePath(filename);
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+  
+  // Wait for previous write on this file to finish
+  if (locks[filename]) {
+    await locks[filename];
+  }
+
+  let resolveLock: () => void;
+  locks[filename] = new Promise((resolve) => {
+    resolveLock = resolve;
+  });
+
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
+  } finally {
+    resolveLock!();
+  }
 }
 
 export function generateId(prefix: string): string {
@@ -35,8 +70,8 @@ export function getAllReservations(): Reservation[] {
   return data.reservations;
 }
 
-export function saveAllReservations(reservations: Reservation[]): void {
-  writeJson('rezerwacje.json', { reservations });
+export async function saveAllReservations(reservations: Reservation[]): Promise<void> {
+  await writeJson('rezerwacje.json', { reservations });
 }
 
 // ── Usługi ────────────────────────────────────────────────────
@@ -47,8 +82,8 @@ export function getAllServices(): Service[] {
   return data.services;
 }
 
-export function saveAllServices(services: Service[]): void {
-  writeJson('uslugi.json', { services });
+export async function saveAllServices(services: Service[]): Promise<void> {
+  await writeJson('uslugi.json', { services });
 }
 
 // ── Klienci ───────────────────────────────────────────────────
@@ -59,8 +94,28 @@ export function getAllClients(): Client[] {
   return data.clients;
 }
 
-export function saveAllClients(clients: Client[]): void {
-  writeJson('klienci.json', { clients });
+export async function saveAllClients(clients: Client[]): Promise<void> {
+  await writeJson('klienci.json', { clients });
+}
+
+export async function recalculateClientStats(clientId: string): Promise<void> {
+  const reservations = getAllReservations();
+  const clients = getAllClients();
+  const clientIdx = clients.findIndex(c => c.id === clientId);
+  
+  if (clientIdx === -1) return;
+
+  const clientReservations = reservations.filter(r => r.clientId === clientId);
+  
+  // totalBookings: all except cancelled
+  const activeReservations = clientReservations.filter(r => r.status !== 'anulowana');
+  clients[clientIdx].totalBookings = activeReservations.length;
+
+  // totalSpent: only completed ones
+  const completedReservations = clientReservations.filter(r => r.status === 'zakonczona');
+  clients[clientIdx].totalSpent = completedReservations.reduce((sum, r) => sum + r.servicePrice, 0);
+
+  await saveAllClients(clients);
 }
 
 // ── Ustawienia ────────────────────────────────────────────────
@@ -71,8 +126,8 @@ export function getSettings(): BusinessSettings {
   return data.settings;
 }
 
-export function saveSettings(settings: BusinessSettings): void {
-  writeJson('ustawienia.json', { settings });
+export async function saveSettings(settings: BusinessSettings): Promise<void> {
+  await writeJson('ustawienia.json', { settings });
 }
 
 export { uuidv4 };

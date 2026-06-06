@@ -20,6 +20,7 @@ import { statsApi } from '@/lib/api';
 import { formatCurrency, formatDate } from '@/lib/formatters';
 import { StatusBadge } from '@/components/ui/Badge';
 import { DAYS_SHORT_PL } from '@/lib/constants';
+import { Skeleton } from '@/components/ui/Skeleton';
 import type { DashboardStats } from '@/types';
 
 export default function DashboardPage() {
@@ -35,9 +36,28 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="loader-container">
-        <div className="spinner" />
-        <span className="text-muted text-sm">Ładowanie dashboardu...</span>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-8)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <Skeleton width="180px" height="32px" />
+          <Skeleton width="240px" height="18px" />
+        </div>
+        <div className="grid-4">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="glass-card" style={{ padding: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <Skeleton width="40px" height="40px" borderRadius="var(--radius-lg)" />
+              <Skeleton width="60%" height="24px" />
+              <Skeleton width="40%" height="14px" />
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)' }}>
+          <div className="glass-card" style={{ padding: 'var(--space-6)', height: 260 }}>
+            <Skeleton width="100%" height="100%" />
+          </div>
+          <div className="glass-card" style={{ padding: 'var(--space-6)', height: 260 }}>
+            <Skeleton width="100%" height="100%" />
+          </div>
+        </div>
       </div>
     );
   }

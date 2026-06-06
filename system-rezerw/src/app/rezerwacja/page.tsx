@@ -1,11 +1,11 @@
 'use client';
 
 // ============================================================
-// STRONA REZERWACJI — Wielokrokowy formularz
+// STRONA REZERWACJI — Wielokrokowy formularz (Elite UX)
 // ============================================================
 
 import { useState, useCallback } from 'react';
-import { CheckCircle, ArrowLeft, Calendar, Clock, User, List, Target } from 'lucide-react';
+import { CheckCircle, ArrowLeft, Calendar, User, List, Target, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ServicePicker } from '@/components/booking/ServicePicker';
 import { DateTimePicker } from '@/components/booking/DateTimePicker';
@@ -21,7 +21,7 @@ const STEPS = [
   { id: 1, label: 'Usługa', Icon: List },
   { id: 2, label: 'Termin', Icon: Calendar },
   { id: 3, label: 'Dane', Icon: User },
-  { id: 4, label: 'Podsumowanie', Icon: CheckCircle },
+  { id: 4, label: 'Potwierdzenie', Icon: CheckCircle },
 ];
 
 const DEFAULT_FORM: BookingFormData = {
@@ -51,11 +51,13 @@ export default function BookingPage() {
     setSelectedService(service);
     updateForm({ serviceId: service.id, date: '', time: '' });
     setStep(2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDateTimeSelect = (date: string, time: string) => {
     updateForm({ date, time });
     setStep(3);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleContactSubmit = (data: {
@@ -67,6 +69,7 @@ export default function BookingPage() {
   }) => {
     updateForm(data);
     setStep(4);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleConfirm = async () => {
@@ -99,12 +102,37 @@ export default function BookingPage() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', position: 'relative', overflowX: 'hidden' }}>
+      {/* Dynamic Background */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+        <div style={{ 
+          position: 'absolute', 
+          top: '-10%', 
+          right: '-10%', 
+          width: '50vw', 
+          height: '50vw', 
+          background: 'radial-gradient(circle, var(--accent-primary-glow) 0%, transparent 70%)',
+          opacity: 0.3,
+          filter: 'blur(100px)'
+        }} />
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '-10%', 
+          left: '-10%', 
+          width: '40vw', 
+          height: '40vw', 
+          background: 'radial-gradient(circle, var(--accent-secondary-glow) 0%, transparent 70%)',
+          opacity: 0.2,
+          filter: 'blur(80px)'
+        }} />
+      </div>
+
       {/* Header */}
       <header
         style={{
-          background: 'rgba(10,15,26,0.85)',
+          background: 'rgba(10,15,26,0.6)',
           backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
           borderBottom: '1px solid var(--border-primary)',
           padding: 'var(--space-4) var(--space-8)',
           display: 'flex',
@@ -118,8 +146,8 @@ export default function BookingPage() {
         <Link href="/" className="flex items-center gap-3" style={{ textDecoration: 'none' }}>
           <div
             style={{
-              width: 32,
-              height: 32,
+              width: 34,
+              height: 34,
               background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
               borderRadius: 'var(--radius-lg)',
               display: 'flex',
@@ -128,111 +156,136 @@ export default function BookingPage() {
               boxShadow: '0 4px 12px rgba(16,185,129,0.2)',
             }}
           >
-            <Target size={14} color="#fff" />
+            <Target size={16} color="#fff" />
           </div>
-          <span style={{ fontWeight: 850, fontSize: 'var(--text-sm)', color: 'var(--text-primary)', letterSpacing: '0.05em' }}>
-            naŁuczniczej
+          <span style={{ fontWeight: 900, fontSize: 'var(--text-base)', color: 'var(--text-primary)', letterSpacing: '0.08em' }}>
+            uFisza
           </span>
         </Link>
-        {step < 5 && step > 1 && (
-          <button className="btn btn-ghost btn-sm" onClick={handleBack}>
-            <ArrowLeft size={14} />
+        
+        {step < 5 && step > 1 ? (
+          <button className="btn btn-ghost btn-sm" onClick={handleBack} style={{ fontWeight: 600 }}>
+            <ArrowLeft size={16} style={{ marginRight: 6 }} />
             Wstecz
           </button>
+        ) : (
+          <Link href="/" className="btn btn-ghost btn-sm" style={{ color: 'var(--text-muted)' }}>
+            Anuluj
+          </Link>
         )}
       </header>
 
       <div
         style={{
-          maxWidth: 720,
+          maxWidth: 800,
           margin: '0 auto',
-          padding: 'var(--space-8) var(--space-4)',
+          padding: 'var(--space-12) var(--space-4) var(--space-20)',
+          position: 'relative',
+          zIndex: 1
         }}
       >
         {step < 5 && (
-          <>
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ marginBottom: 'var(--space-12)' }}
+          >
             {/* Stepper */}
-            <div className="stepper" style={{ marginBottom: 'var(--space-10)' }}>
-              {STEPS.map((s, i) => (
-                <div key={s.id} className="step" style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
-                  <div
-                    className={`step-circle ${step === s.id ? 'active' : step > s.id ? 'completed' : ''}`}
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: '50%',
-                      border: '2px solid',
-                      borderColor: step > s.id ? 'var(--accent-primary)' : step === s.id ? 'var(--accent-primary)' : 'var(--border-primary)',
-                      background: step > s.id ? 'var(--accent-primary)' : step === s.id ? 'var(--accent-primary-glow)' : 'var(--bg-secondary)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontWeight: 700,
-                      fontSize: 'var(--text-sm)',
-                      color: step > s.id ? '#fff' : step === s.id ? 'var(--accent-primary)' : 'var(--text-muted)',
-                      flexShrink: 0,
-                      transition: 'all var(--transition-base)',
-                      boxShadow: step === s.id ? '0 0 0 4px var(--accent-primary-glow)' : 'none',
-                    }}
-                  >
-                    {step > s.id ? <CheckCircle size={16} /> : s.id}
+            <div className="stepper" style={{ marginBottom: 'var(--space-10)', justifyContent: 'center' }}>
+              {STEPS.map((s, i) => {
+                const isCompleted = step > s.id;
+                const isActive = step === s.id;
+                
+                return (
+                  <div key={s.id} className="step" style={{ flex: i === STEPS.length - 1 ? '0 0 auto' : '1' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <motion.div
+                        animate={isActive ? { scale: 1.1, boxShadow: '0 0 20px var(--accent-primary-glow)' } : { scale: 1 }}
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: '50%',
+                          background: isCompleted ? 'var(--accent-primary)' : isActive ? 'var(--bg-card)' : 'var(--bg-elevated)',
+                          border: `2px solid ${isCompleted || isActive ? 'var(--accent-primary)' : 'var(--border-primary)'}`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: isCompleted ? '#fff' : isActive ? 'var(--accent-primary)' : 'var(--text-muted)',
+                          fontWeight: 800,
+                          fontSize: 'var(--text-sm)',
+                          zIndex: 2,
+                          transition: 'all 0.4s ease'
+                        }}
+                      >
+                        {isCompleted ? <CheckCircle size={20} strokeWidth={3} /> : s.id}
+                      </motion.div>
+
+                      {i < STEPS.length - 1 && (
+                        <div style={{ flex: 1, height: 2, background: 'var(--border-primary)', margin: '0 8px', position: 'relative', overflow: 'hidden' }}>
+                          <motion.div 
+                            initial={{ width: '0%' }}
+                            animate={{ width: isCompleted ? '100%' : '0%' }}
+                            transition={{ duration: 0.5 }}
+                            style={{ position: 'absolute', top: 0, left: 0, height: '100%', background: 'var(--accent-primary)' }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ 
+                      marginTop: 8, 
+                      fontSize: '10px', 
+                      fontWeight: 700, 
+                      textTransform: 'uppercase', 
+                      letterSpacing: '0.05em',
+                      color: isActive ? 'var(--accent-primary)' : 'var(--text-muted)',
+                      textAlign: 'left',
+                      marginLeft: 4,
+                      display: 'none' // Hidden by default, shown via media query if needed
+                    }} className="step-label-mobile">
+                      {s.label}
+                    </div>
                   </div>
+                );
+              })}
+            </div>
 
-                  <span
-                    style={{
-                      fontSize: 'var(--text-xs)',
-                      fontWeight: 500,
-                      marginLeft: 'var(--space-2)',
-                      color: step >= s.id ? 'var(--accent-primary)' : 'var(--text-muted)',
-                      whiteSpace: 'nowrap',
-                    }}
-                    className="hidden-mobile-text"
-                  >
-                    {s.label}
-                  </span>
-
-                  {i < STEPS.length - 1 && (
-                    <div
-                      style={{
-                        flex: 1,
-                        height: 2,
-                        background: step > s.id ? 'var(--accent-primary)' : 'var(--border-primary)',
-                        margin: '0 var(--space-2)',
-                        transition: 'background var(--transition-slow)',
-                      }}
-                    />
-                  )}
+            {/* Title & Header */}
+            <div style={{ textAlign: 'center' }}>
+              <motion.div
+                key={step + '-title'}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                <div className="badge" style={{ background: 'var(--accent-primary-glow)', color: 'var(--accent-primary)', marginBottom: 12, borderRadius: 'var(--radius-full)', padding: '4px 12px', fontWeight: 600 }}>
+                  Krok {step} z 4
                 </div>
-              ))}
+                <h1 className="text-ls-tight" style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontWeight: 900, marginBottom: 'var(--space-2)' }}>
+                  {step === 1 && 'Co dziś dla Ciebie zrobimy?'}
+                  {step === 2 && 'Wybierz idealny moment'}
+                  {step === 3 && 'Ostatnie szczegóły'}
+                  {step === 4 && 'Sprawdź i potwierdź'}
+                </h1>
+                <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', maxWidth: 480, margin: '0 auto' }}>
+                  {step === 1 && 'Wybierz jedną z naszych luksusowych usług fryzjerskich.'}
+                  {step === 2 && 'Nasz kalendarz jest zawsze aktualny. Wybierz termin, który Ci pasuje.'}
+                  {step === 3 && 'Wypełnij dane, abyśmy mogli wysłać Ci potwierdzenie wizyty.'}
+                  {step === 4 && 'Prawie gotowe! Upewnij się, że wszystko się zgadza.'}
+                </p>
+              </motion.div>
             </div>
-
-            {/* Title */}
-            <div style={{ textAlign: 'center', marginBottom: 'var(--space-8)' }}>
-              <h1 style={{ fontSize: 'var(--text-2xl)', fontWeight: 800, marginBottom: 'var(--space-2)' }}>
-                {step === 1 && 'Wybierz usługę'}
-                {step === 2 && 'Wybierz termin'}
-                {step === 3 && 'Twoje dane'}
-                {step === 4 && 'Podsumowanie rezerwacji'}
-              </h1>
-              <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
-                {step === 1 && 'Kliknij na usługę, która Cię interesuje'}
-                {step === 2 && 'Wybierz preferowaną datę i godzinę'}
-                {step === 3 && 'Uzupełnij dane kontaktowe — bez rejestracji'}
-                {step === 4 && 'Sprawdź szczegóły i potwierdź rezerwację'}
-              </p>
-            </div>
-          </>
+          </motion.div>
         )}
 
         {/* Step Content */}
-        <div style={{ position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'relative' }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={step}
-              initial={{ opacity: 0, x: 15 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -15 }}
-              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              initial={{ opacity: 0, x: 20, filter: 'blur(8px)' }}
+              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, x: -20, filter: 'blur(8px)' }}
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               {step === 1 && (
                 <ServicePicker onSelect={handleServiceSelect} selectedId={form.serviceId} />
@@ -279,9 +332,9 @@ export default function BookingPage() {
         </div>
       </div>
 
-      <style>{`
+      <style jsx global>{`
         @media (max-width: 480px) {
-          .hidden-mobile-text { display: none; }
+          .step-label-mobile { display: block !important; }
         }
       `}</style>
     </div>

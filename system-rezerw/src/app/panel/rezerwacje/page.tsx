@@ -5,9 +5,9 @@
 // ============================================================
 
 import { useState, useEffect, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import {
   Search,
-  Filter,
   Eye,
   CheckCircle,
   XCircle,
@@ -21,15 +21,16 @@ import {
   ChevronRight,
   Plus,
   Clock,
-  User,
-  Scissors
+  User
 } from 'lucide-react';
 import { reservationsApi, servicesApi } from '@/lib/api';
-import { formatDate, formatCurrency } from '@/lib/formatters';
+import { formatDate, formatCurrency, addMinutes } from '@/lib/formatters';
 import { StatusBadge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/components/ui/ToastProvider';
 import { STATUS_LABELS } from '@/lib/constants';
+import { Skeleton, SkeletonCircle } from '@/components/ui/Skeleton';
 import type { Reservation, ReservationStatus, Service } from '@/types';
 
 const STATUSES: (ReservationStatus | 'wszystkie')[] = ['wszystkie', 'oczekujaca', 'potwierdzona', 'zakonczona', 'anulowana'];
@@ -364,16 +365,32 @@ export default function ReservationsPage() {
         /* TABLE VIEW */
         <div className="glass-card" style={{ overflow: 'hidden' }}>
           {loading ? (
-            <div className="loader-container">
-              <div className="spinner" />
+            <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[1, 2, 3, 4, 5].map(i => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 0', borderBottom: '1px solid var(--border-primary)' }}>
+                  <SkeletonCircle size="36px" />
+                  <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <Skeleton width="120px" height="14px" />
+                    <Skeleton width="80px" height="10px" />
+                  </div>
+                  <Skeleton width="100px" height="14px" />
+                  <Skeleton width="100px" height="14px" />
+                  <Skeleton width="60px" height="14px" />
+                  <Skeleton width="80px" height="24px" borderRadius="var(--radius-full)" />
+                </div>
+              ))}
             </div>
           ) : reservations.length === 0 ? (
-            <div className="empty-state">
-              <div className="empty-state-icon">
-                <Filter size={24} style={{ color: 'var(--text-muted)' }} />
-              </div>
-              <p>Brak rezerwacji spełniających kryteria</p>
-            </div>
+            <EmptyState 
+              icon={<CalendarDays size={32} />}
+              title="Brak rezerwacji"
+              description="Nie znaleźliśmy żadnych wizyt pasujących do wybranych filtrów. Spróbuj zmienić zakres dat lub status."
+              action={
+                <button className="btn btn-secondary btn-sm" onClick={() => { setSearch(''); setStatusFilter('wszystkie'); }}>
+                  Wyczyść filtry
+                </button>
+              }
+            />
           ) : (
             <div className="table-container" style={{ border: 'none', borderRadius: 0 }}>
               {/* Tabela widoczna na desktopie */}
@@ -640,10 +657,46 @@ export default function ReservationsPage() {
 
                 return (
                   <div key={colIdx} style={{ position: 'relative', borderLeft: '1px solid var(--border-primary)', height: '100%' }}>
-                    {/* Poziome linie tła */}
-                    {hours.map(h => (
-                      <div key={h} style={{ height: 60, borderBottom: '1px dashed var(--border-primary)' }} />
-                    ))}
+                    {/* Poziome linie tła + interaktywne sloty */}
+                    {hours.map(h => {
+                      const timeStr = `${h.toString().padStart(2, '0')}:00`;
+                      const isTaken = dayReservations.some(r => r.time === timeStr);
+                      return (
+                        <div 
+                          key={h} 
+                          style={{ height: 60, borderBottom: '1px dashed var(--border-primary)', position: 'relative' }}
+                          className="calendar-slot"
+                        >
+                          {!isTaken && (
+                            <button
+                              onClick={() => {
+                                setCreateForm({ ...createForm, date: dateStr, time: timeStr });
+                                setShowCreateModal(true);
+                              }}
+                              style={{
+                                position: 'absolute',
+                                inset: 0,
+                                width: '100%',
+                                height: '100%',
+                                background: 'transparent',
+                                border: 'none',
+                                cursor: 'cell',
+                                opacity: 0,
+                                transition: 'opacity 0.2s ease',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: 'var(--accent-primary)',
+                                zIndex: 5,
+                              }}
+                              className="quick-add-btn"
+                            >
+                              <Plus size={16} />
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
 
                     {/* Kafelki rezerwacji */}
                     {dayReservations.map(r => {
@@ -661,44 +714,44 @@ export default function ReservationsPage() {
                       if (startHour < 8 || startHour >= 20) return null;
 
                       return (
-                        <div
+                        <motion.div
                           key={r.id}
+                          layoutId={`res-${r.id}`}
                           onClick={() => setSelected(r)}
+                          whileHover={{ scale: 1.02, zIndex: 20, boxShadow: 'var(--shadow-lg)' }}
                           style={{
                             position: 'absolute',
                             top: topPos,
-                            left: '4%',
-                            width: '92%',
-                            height: heightVal,
-                            background: `linear-gradient(135deg, ${sColor}25, ${sColor}15)`,
-                            borderLeft: `4px solid ${sColor}`,
-                            borderTop: `1px solid ${sColor}40`,
-                            borderRight: `1px solid ${sColor}40`,
-                            borderBottom: `1px solid ${sColor}40`,
+                            left: '2%',
+                            width: '96%',
+                            height: heightVal - 2,
+                            background: `linear-gradient(135deg, ${sColor}, ${sColor}dd)`,
+                            borderLeft: `4px solid rgba(255,255,255,0.3)`,
                             borderRadius: 'var(--radius-md)',
-                            padding: '4px 6px',
+                            padding: '6px 8px',
                             cursor: 'pointer',
                             zIndex: 10,
                             overflow: 'hidden',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 2,
+                            gap: 1,
                             boxShadow: 'var(--shadow-sm)',
-                            transition: 'transform var(--transition-fast)'
+                            color: '#fff',
                           }}
-                          className="calendar-tile-hover"
                           title={`${r.clientFirstName} ${r.clientLastName} - ${r.serviceName} (${r.time})`}
                         >
-                          <div style={{ fontWeight: 700, fontSize: '10px', color: 'var(--text-primary)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                          <div style={{ fontWeight: 800, fontSize: '11px', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                             {r.serviceName}
                           </div>
-                          <div style={{ fontSize: '9px', color: 'var(--text-secondary)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', display: 'flex', alignItems: 'center', gap: 2 }}>
-                            <User size={8} /> {r.clientFirstName} {r.clientLastName}
+                          <div style={{ fontSize: '10px', opacity: 0.9, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden', display: 'flex', alignItems: 'center', gap: 4 }}>
+                            <User size={10} /> {r.clientFirstName} {r.clientLastName}
                           </div>
-                          <div style={{ fontSize: '9px', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 2, marginTop: 'auto' }}>
-                            <Clock size={8} /> {r.time} ({r.serviceDuration}m)
-                          </div>
-                        </div>
+                          {heightVal > 40 && (
+                            <div style={{ fontSize: '10px', opacity: 0.8, display: 'flex', alignItems: 'center', gap: 4, marginTop: 'auto' }}>
+                              <Clock size={10} /> {r.time} — {addMinutes(r.time, r.serviceDuration)}
+                            </div>
+                          )}
+                        </motion.div>
                       );
                     })}
                   </div>

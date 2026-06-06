@@ -76,8 +76,8 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
             <Target size={18} color="#fff" />
           </div>
           <div>
-            <div className="text-sm font-extrabold text-primary" style={{ letterSpacing: '0.05em' }}>naŁuczniczej</div>
-            <div className="text-xs text-muted">Salon & Spa</div>
+            <div className="text-sm font-extrabold text-primary" style={{ letterSpacing: '0.05em' }}>uFisza</div>
+            <div className="text-xs text-muted">Salon Fryzjerski</div>
           </div>
           {onClose && (
             <button

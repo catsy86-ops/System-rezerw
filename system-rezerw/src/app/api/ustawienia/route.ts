@@ -18,7 +18,7 @@ export async function GET() {
 export async function PUT(req: NextRequest) {
   try {
     const body = await req.json() as BusinessSettings;
-    saveSettings(body);
+    await saveSettings(body);
     return NextResponse.json({ success: true, data: body });
   } catch {
     return NextResponse.json({ success: false, error: 'Błąd zapisu ustawień' }, { status: 500 });

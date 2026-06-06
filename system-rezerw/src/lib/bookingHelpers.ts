@@ -33,11 +33,12 @@ interface CalculateTakenSlotsParams {
   intervalMinutes: number;
   isToday: boolean;
   currentMinutes?: number;
+  bufferMinutes?: number;
 }
 
 /**
  * Oblicza listę zablokowanych (zajętych) slotów godzinowych na podstawie:
- * - istniejących rezerwacji (nakładanie się czasowe usługi)
+ * - istniejących rezerwacji (nakładanie się czasowe usługi + czas buforowy)
  * - przekroczenia godziny zamknięcia salonu
  * - slotów z przeszłości (jeżeli rezerwacja jest robiona na dziś)
  */
@@ -48,6 +49,7 @@ export function calculateTakenSlots({
   closeTime,
   isToday,
   currentMinutes = 0,
+  bufferMinutes = 0,
 }: CalculateTakenSlotsParams): string[] {
   const activeReservations = reservations.filter((r) => r.status !== 'anulowana');
   const takenFull: string[] = [];
@@ -61,11 +63,15 @@ export function calculateTakenSlots({
       return;
     }
 
-    // 2. Sprawdź, czy termin nie nakłada się na istniejącą rezerwację
+    // 2. Sprawdź, czy termin nie nakłada się na istniejącą rezerwację (z uwzględnieniem bufora)
     const overlaps = activeReservations.some((r) => {
       const rStart = r.time;
-      const rEnd = addMinutes(r.time, r.serviceDuration);
-      return slot < rEnd && slotEnd > rStart;
+      const rEndWithBuffer = addMinutes(r.time, r.serviceDuration + bufferMinutes);
+      const slotEndWithBuffer = addMinutes(slot, serviceDuration + bufferMinutes);
+      
+      // Nowy slot zaczyna się przed zakończeniem istniejącej (z buforem) 
+      // ORAZ Nowy slot (z buforem) kończy się po rozpoczęciu istniejącej
+      return slot < rEndWithBuffer && slotEndWithBuffer > rStart;
     });
 
     if (overlaps) {

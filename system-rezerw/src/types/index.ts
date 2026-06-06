@@ -60,7 +60,14 @@ export interface BusinessSettings {
   openTime: string;        // HH:MM
   closeTime: string;       // HH:MM
   slotInterval: number;    // minuty (15, 30, 60)
+  bufferTime: number;      // minuty przerwy między wizytami
   workingDays: number[];   // 0=niedziela, 1=poniedzialek, ... 6=sobota
+  workingHoursExceptions?: {
+    date: string;          // YYYY-MM-DD
+    isOpen: boolean;
+    openTime?: string;
+    closeTime?: string;
+  }[];
   currency: string;
   timezone: string;
 }

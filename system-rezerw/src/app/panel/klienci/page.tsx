@@ -5,10 +5,12 @@
 // ============================================================
 
 import { useState, useEffect, useCallback } from 'react';
-import { Search, User, Mail, Phone, Calendar, DollarSign, History } from 'lucide-react';
+import { Search, User, Mail, Phone, Calendar, DollarSign, History, Users } from 'lucide-react';
 import { clientsApi, reservationsApi } from '@/lib/api';
 import { formatCurrency, formatDate, getInitials } from '@/lib/formatters';
 import { Modal } from '@/components/ui/Modal';
+import { Skeleton, SkeletonCircle } from '@/components/ui/Skeleton';
+import { EmptyState } from '@/components/ui/EmptyState';
 import type { Client } from '@/types';
 
 export default function ClientsPage() {
@@ -77,14 +79,32 @@ export default function ClientsPage() {
       {/* Table */}
       <div className="glass-card" style={{ overflow: 'hidden' }}>
         {loading ? (
-          <div className="loader-container"><div className="spinner" /></div>
-        ) : clients.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-state-icon">
-              <User size={24} style={{ color: 'var(--text-muted)' }} />
-            </div>
-            <p>Brak klientów</p>
+          <div style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {[1, 2, 3, 4, 5].map(i => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '12px 0', borderBottom: '1px solid var(--border-primary)' }}>
+                <SkeletonCircle size="36px" />
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                  <Skeleton width="150px" height="14px" />
+                  <Skeleton width="100px" height="10px" />
+                </div>
+                <Skeleton width="120px" height="14px" />
+                <Skeleton width="80px" height="14px" />
+                <Skeleton width="60px" height="14px" />
+                <Skeleton width="40px" height="40px" borderRadius="var(--radius-md)" />
+              </div>
+            ))}
           </div>
+        ) : clients.length === 0 ? (
+          <EmptyState 
+            icon={<Users size={32} />}
+            title="Baza klientów jest pusta"
+            description="Nie znaleźliśmy klientów o podanych kryteriach. Nowi klienci pojawią się tutaj po pierwszej rezerwacji."
+            action={
+              <button className="btn btn-secondary btn-sm" onClick={() => setSearch('')}>
+                Wyczyść szukanie
+              </button>
+            }
+          />
         ) : (
           <div className="table-container" style={{ border: 'none', borderRadius: 0 }}>
             <table className="table">

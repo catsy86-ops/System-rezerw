@@ -41,7 +41,7 @@
       "price": 80,
       "category": "paznokcie",
       "icon": "💅",
-      "active": true,
+      "active": false,
       "color": "#EC4899"
     },
     {
@@ -52,7 +52,7 @@
       "price": 110,
       "category": "paznokcie",
       "icon": "🌸",
-      "active": true,
+      "active": false,
       "color": "#8B5CF6"
     },
     {
@@ -63,7 +63,7 @@
       "price": 180,
       "category": "masaz",
       "icon": "🧘",
-      "active": true,
+      "active": false,
       "color": "#06B6D4"
     },
     {
@@ -74,7 +74,7 @@
       "price": 240,
       "category": "masaz",
       "icon": "💆",
-      "active": true,
+      "active": false,
       "color": "#EF4444"
     },
     {
@@ -85,7 +85,7 @@
       "price": 200,
       "category": "kosmetyka",
       "icon": "🌿",
-      "active": true,
+      "active": false,
       "color": "#22C55E"
     },
     {
@@ -96,7 +96,7 @@
       "price": 70,
       "category": "kosmetyka",
       "icon": "👁️",
-      "active": true,
+      "active": false,
       "color": "#D97706"
     },
     {

@@ -9,8 +9,11 @@ import {
   getAllServices,
   getAllClients,
   saveAllClients,
+  getSettings,
   generateId,
+  recalculateClientStats,
 } from '@/lib/db';
+import { isDateInPast } from '@/lib/formatters';
 import type { Reservation, ReservationStatus } from '@/types';
 
 // GET /api/rezerwacje
@@ -69,6 +72,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Brakujące wymagane pola' }, { status: 400 });
     }
 
+    if (isDateInPast(date)) {
+      return NextResponse.json({ success: false, error: 'Nie można zarezerwować terminu w przeszłości' }, { status: 400 });
+    }
+
     const services = getAllServices();
     const service = services.find(s => s.id === serviceId);
     if (!service) {
@@ -78,22 +85,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Usługa jest nieaktywna' }, { status: 400 });
     }
 
-    // Sprawdź kolizję terminów
+    const settings = getSettings();
+    const buffer = settings.bufferTime || 0;
+
+    // Sprawdź kolizję terminów (z uwzględnieniem bufora)
     const existing = getAllReservations().filter(
       r => r.date === date && r.status !== 'anulowana'
     );
     const newStart = timeToMinutes(time);
-    const newEnd = newStart + service.duration;
+    const newEndWithBuffer = newStart + service.duration + buffer;
 
     const conflict = existing.find(r => {
       const rStart = timeToMinutes(r.time);
-      const rEnd = rStart + r.serviceDuration;
-      return newStart < rEnd && newEnd > rStart;
+      const rEndWithBuffer = rStart + r.serviceDuration + buffer;
+      return newStart < rEndWithBuffer && newEndWithBuffer > rStart;
     });
 
     if (conflict) {
       return NextResponse.json(
-        { success: false, error: 'Wybrany termin jest już zajęty' },
+        { success: false, error: 'Wybrany termin (lub wymagany bufor po nim) jest już zajęty' },
         { status: 409 }
       );
     }
@@ -117,12 +127,8 @@ export async function POST(req: NextRequest) {
         totalSpent: 0,
       };
       clients.push(client);
+      await saveAllClients(clients);
     }
-
-    // Aktualizuj statystyki klienta
-    client.totalBookings += 1;
-    client.totalSpent += service.price;
-    saveAllClients(clients);
 
     const reservation: Reservation = {
       id: generateId('res'),
@@ -145,7 +151,10 @@ export async function POST(req: NextRequest) {
 
     const reservations = getAllReservations();
     reservations.push(reservation);
-    saveAllReservations(reservations);
+    await saveAllReservations(reservations);
+
+    // Aktualizuj statystyki klienta
+    await recalculateClientStats(client.id);
 
     return NextResponse.json({ success: true, data: reservation }, { status: 201 });
   } catch (error) {

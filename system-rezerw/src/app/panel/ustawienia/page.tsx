@@ -5,7 +5,7 @@
 // ============================================================
 
 import { useState, useEffect } from 'react';
-import { Save, Loader2, Building2, Clock, Calendar } from 'lucide-react';
+import { Save, Loader2, Building2, Clock, Calendar, AlertCircle, Trash2, Plus } from 'lucide-react';
 import { useToast } from '@/components/ui/ToastProvider';
 import { DAYS_PL, SLOT_INTERVALS } from '@/lib/constants';
 import type { BusinessSettings } from '@/types';
@@ -126,6 +126,14 @@ export default function SettingsPage() {
               ))}
             </select>
           </div>
+          <div className="form-group">
+            <label className="form-label" htmlFor="buffer-time">Przerwa (bufor)</label>
+            <select id="buffer-time" className="form-input form-select" value={settings.bufferTime} onChange={e => set('bufferTime', Number(e.target.value))}>
+              {[0, 5, 10, 15, 20, 30].map(v => (
+                <option key={v} value={v}>{v} minut</option>
+              ))}
+            </select>
+          </div>
         </div>
       </Section>
 
@@ -150,6 +158,117 @@ export default function SettingsPage() {
         </div>
         <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
           Aktywne dni: {settings.workingDays.map(d => DAYS_PL[d]).join(', ')}
+        </div>
+      </Section>
+
+      {/* Exceptions */}
+      <Section icon={<AlertCircle size={18} />} title="Wyjątki w grafikach (Święta/Dni wolne)">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          {(settings.workingHoursExceptions || []).map((ex, idx) => (
+            <div key={idx} className="flex items-center gap-4 p-4 glass-card">
+              <input 
+                type="date" 
+                className="form-input" 
+                value={ex.date} 
+                onChange={e => {
+                  const newEx = [...(settings.workingHoursExceptions || [])];
+                  newEx[idx].date = e.target.value;
+                  set('workingHoursExceptions', newEx);
+                }} 
+              />
+              <label className="flex items-center gap-2 text-sm">
+                <input 
+                  type="checkbox" 
+                  checked={ex.isOpen} 
+                  onChange={e => {
+                    const newEx = [...(settings.workingHoursExceptions || [])];
+                    newEx[idx].isOpen = e.target.checked;
+                    set('workingHoursExceptions', newEx);
+                  }}
+                />
+                Otwarte
+              </label>
+              {ex.isOpen && (
+                <>
+                  <input 
+                    type="time" 
+                    className="form-input" 
+                    value={ex.openTime} 
+                    onChange={e => {
+                      const newEx = [...(settings.workingHoursExceptions || [])];
+                      newEx[idx].openTime = e.target.value;
+                      set('workingHoursExceptions', newEx);
+                    }}
+                  />
+                  <input 
+                    type="time" 
+                    className="form-input" 
+                    value={ex.closeTime} 
+                    onChange={e => {
+                      const newEx = [...(settings.workingHoursExceptions || [])];
+                      newEx[idx].closeTime = e.target.value;
+                      set('workingHoursExceptions', newEx);
+                    }}
+                  />
+                </>
+              )}
+              <button 
+                className="btn btn-ghost btn-icon" 
+                onClick={() => {
+                  const newEx = settings.workingHoursExceptions?.filter((_, i) => i !== idx);
+                  set('workingHoursExceptions', newEx);
+                }}
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+          ))}
+          <button 
+            className="btn btn-secondary btn-sm" 
+            onClick={() => {
+              const newEx = [...(settings.workingHoursExceptions || []), { date: '', isOpen: false, openTime: '08:00', closeTime: '20:00' }];
+              set('workingHoursExceptions', newEx);
+            }}
+          >
+            <Plus size={14} /> Dodaj wyjątek
+          </button>
+        </div>
+      </Section>
+
+      {/* Google Calendar Sync */}
+      <Section icon={<div style={{ width: 18, height: 18, background: '#4285F4', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '10px', fontWeight: 900 }}>G</div>} title="Integracja z Kalendarzem Google">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            Synchronizuj wizyty uFisza ze swoim prywatnym kalendarzem Google. Pracownicy będą mogli widzieć grafik na swoich telefonach.
+          </p>
+          
+          <div style={{ padding: 'var(--space-4)', background: 'rgba(66, 133, 244, 0.05)', border: '1px solid rgba(66, 133, 244, 0.2)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-4)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+              <div style={{ width: 32, height: 32, background: '#4285F4', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+                <Calendar size={16} />
+              </div>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: 'var(--text-sm)' }}>Status: Niepołączono</div>
+                <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>Kliknij przycisk, aby autoryzować konto</div>
+              </div>
+            </div>
+            <button className="btn btn-primary btn-sm" style={{ background: '#4285F4', borderColor: '#4285F4' }}>
+              Połącz z Google
+            </button>
+          </div>
+
+          <div className="divider" style={{ margin: 0 }} />
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" disabled />
+              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>Automatycznie dodawaj nowe rezerwacje do kalendarza</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" disabled />
+              <span style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)' }}>Blokuj terminy na podstawie wydarzeń prywatnych</span>
+            </label>
+          </div>
         </div>
       </Section>
 

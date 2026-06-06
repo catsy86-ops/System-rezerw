@@ -11,6 +11,7 @@ import { formatCurrency, formatDuration } from '@/lib/formatters';
 import { Modal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
 import { useToast } from '@/components/ui/ToastProvider';
+import { Skeleton, SkeletonCard } from '@/components/ui/Skeleton';
 import { validateService, getFieldError } from '@/lib/validators';
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/lib/constants';
 import type { Service, ServiceFormData, ServiceCategory } from '@/types';
@@ -132,7 +133,9 @@ export default function ServicesPage() {
       </div>
 
       {loading ? (
-        <div className="loader-container"><div className="spinner" /></div>
+        <div className="grid-auto">
+          {[1, 2, 3, 4, 5, 6].map(i => <SkeletonCard key={i} />)}
+        </div>
       ) : (
         <div className="grid-auto">
           {services.map(service => (

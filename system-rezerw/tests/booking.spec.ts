@@ -5,7 +5,7 @@ test.describe('System Rezerwacji - Testy E2E', () => {
   test('powinien przejść pełną ścieżkę klienta i zarezerwować wizytę', async ({ page }) => {
     // 1. Wejdź na stronę główną rezerwacji
     await page.goto('/rezerwacja');
-    await expect(page).toHaveTitle(/naŁuczniczej/);
+    await expect(page).toHaveTitle(/uFisza/);
 
     // Krok 1: Wybór usługi
     const strzyzenieDamskie = page.locator('#service-svc-001');

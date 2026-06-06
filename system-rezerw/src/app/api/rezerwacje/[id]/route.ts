@@ -3,7 +3,7 @@
 // ============================================================
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllReservations, saveAllReservations } from '@/lib/db';
+import { getAllReservations, saveAllReservations, recalculateClientStats } from '@/lib/db';
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -49,6 +49,8 @@ export async function PUT(req: NextRequest, { params }: Params) {
       return NextResponse.json({ success: false, error: 'Rezerwacja nie istnieje' }, { status: 404 });
     }
 
+    const clientId = reservations[idx].clientId;
+
     reservations[idx] = {
       ...reservations[idx],
       ...body,
@@ -56,7 +58,9 @@ export async function PUT(req: NextRequest, { params }: Params) {
       updatedAt: new Date().toISOString(),
     };
 
-    saveAllReservations(reservations);
+    await saveAllReservations(reservations);
+    await recalculateClientStats(clientId);
+
     return NextResponse.json({ success: true, data: reservations[idx] });
   } catch {
     return NextResponse.json({ success: false, error: 'Błąd aktualizacji rezerwacji' }, { status: 500 });
@@ -74,10 +78,13 @@ export async function DELETE(req: NextRequest, { params }: Params) {
       return NextResponse.json({ success: false, error: 'Rezerwacja nie istnieje' }, { status: 404 });
     }
 
+    const clientId = reservations[idx].clientId;
+
     // Soft-delete: zmień status na anulowana
     reservations[idx].status = 'anulowana';
     reservations[idx].updatedAt = new Date().toISOString();
-    saveAllReservations(reservations);
+    await saveAllReservations(reservations);
+    await recalculateClientStats(clientId);
 
     return NextResponse.json({ success: true, data: { id } });
   } catch {

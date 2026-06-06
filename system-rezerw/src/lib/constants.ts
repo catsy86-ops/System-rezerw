@@ -2,8 +2,8 @@
 // STAŁE APLIKACJI
 // ============================================================
 
-export const APP_NAME = 'naŁuczniczej';
-export const APP_DESCRIPTION = 'Salon & Spa naŁuczniczej - profesjonalne usługi fryzjerskie, kosmetyczne i masażu';
+export const APP_NAME = 'uFisza';
+export const APP_DESCRIPTION = 'Salon Fryzjerski uFisza - profesjonalne usługi fryzjerskie i stylizacja';
 
 export const STATUS_LABELS: Record<string, string> = {
   oczekujaca: 'Oczekująca',

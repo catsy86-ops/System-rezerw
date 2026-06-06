@@ -21,7 +21,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
     }
 
     services[idx] = { ...services[idx], ...body, id };
-    saveAllServices(services);
+    await saveAllServices(services);
 
     return NextResponse.json({ success: true, data: services[idx] });
   } catch {
@@ -40,7 +40,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     }
 
     services.splice(idx, 1);
-    saveAllServices(services);
+    await saveAllServices(services);
 
     return NextResponse.json({ success: true, data: { id } });
   } catch {

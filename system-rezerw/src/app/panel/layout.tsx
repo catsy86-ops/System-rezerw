@@ -8,9 +8,12 @@ import { useState, useEffect } from 'react';
 import { Sun, Moon, Target } from 'lucide-react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { BottomNav } from '@/components/layout/BottomNav';
+import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const pathname = usePathname();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as 'dark' | 'light' || 'dark';
@@ -62,7 +65,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
               <Target size={14} color="#fff" />
             </div>
             <span style={{ fontSize: 'var(--text-sm)', fontWeight: 800, letterSpacing: '0.02em' }}>
-              naŁuczniczej
+              uFisza
             </span>
           </div>
 
@@ -76,8 +79,18 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
           </button>
         </header>
 
-        <main className="page-main page-enter" style={{ position: 'relative' }}>
-          {children}
+        <main className="page-main" style={{ position: 'relative' }}>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={pathname}
+              initial={{ opacity: 0, y: 10, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -10, filter: 'blur(10px)' }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
 
         {/* Mobile Bottom Navigation */}
