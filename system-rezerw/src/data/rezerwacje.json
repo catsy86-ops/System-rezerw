@@ -215,6 +215,24 @@
       "notes": "",
       "createdAt": "2026-06-06T08:00:00Z",
       "updatedAt": "2026-06-06T08:00:00Z"
+    },
+    {
+      "id": "res-52f7ad6e",
+      "serviceId": "svc-001",
+      "serviceName": "Strzyżenie damskie",
+      "servicePrice": 120,
+      "serviceDuration": 60,
+      "clientId": "cli-374ad88f",
+      "clientFirstName": "Jan",
+      "clientLastName": "Kowalski",
+      "clientEmail": "jan.kowalski@example.com",
+      "clientPhone": "123 456 789",
+      "date": "2026-06-06",
+      "time": "14:30",
+      "status": "oczekujaca",
+      "notes": "",
+      "createdAt": "2026-06-06T09:26:04.579Z",
+      "updatedAt": "2026-06-06T09:26:04.579Z"
     }
   ]
 }
