@@ -47,6 +47,11 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }: M
         aria-labelledby={title ? 'modal-title' : undefined}
         style={{ maxWidth: maxWidths[size] }}
       >
+        {/* Grab indicator for mobile bottom sheets */}
+        <div className="hidden-desktop" style={{ display: 'flex', justifyContent: 'center', paddingTop: '10px' }}>
+          <div style={{ width: '40px', height: '4px', borderRadius: '2px', background: 'var(--border-primary)' }} />
+        </div>
+
         {title && (
           <div className="modal-header">
             <h2 id="modal-title" className="text-lg font-semibold text-primary">{title}</h2>

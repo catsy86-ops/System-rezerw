@@ -118,6 +118,28 @@
       "phone": "123 456 789",
       "notes": "",
       "createdAt": "2026-06-06T09:26:04.579Z",
+      "totalBookings": 6,
+      "totalSpent": 720
+    },
+    {
+      "id": "cli-2aded265",
+      "firstName": "Anna",
+      "lastName": "Nowak",
+      "email": "anna.nowak@example.com",
+      "phone": "601234567",
+      "notes": "",
+      "createdAt": "2026-06-06T12:28:03.590Z",
+      "totalBookings": 2,
+      "totalSpent": 120
+    },
+    {
+      "id": "cli-1d6fab80",
+      "firstName": "A",
+      "lastName": "B",
+      "email": "a@b.com",
+      "phone": "123456789",
+      "notes": "",
+      "createdAt": "2026-06-06T12:34:25.533Z",
       "totalBookings": 1,
       "totalSpent": 120
     }

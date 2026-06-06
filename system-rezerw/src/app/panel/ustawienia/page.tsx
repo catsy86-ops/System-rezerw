@@ -71,20 +71,6 @@ export default function SettingsPage() {
     return <div className="loader-container"><div className="spinner" /></div>;
   }
 
-  const Section = ({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) => (
-    <div className="glass-card" style={{ padding: 'var(--space-6)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-5)', paddingBottom: 'var(--space-4)', borderBottom: '1px solid var(--border-primary)' }}>
-        <div style={{ width: 36, height: 36, background: 'rgba(16,185,129,0.1)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-primary)' }}>
-          {icon}
-        </div>
-        <h2 style={{ fontWeight: 700, fontSize: 'var(--text-base)' }}>{title}</h2>
-      </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-        {children}
-      </div>
-    </div>
-  );
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
       {/* Header */}
@@ -173,6 +159,22 @@ export default function SettingsPage() {
           {saving ? <Loader2 size={18} style={{ animation: 'spin 1s linear infinite' }} /> : <Save size={18} />}
           Zapisz wszystkie ustawienia
         </button>
+      </div>
+    </div>
+  );
+}
+
+function Section({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
+  return (
+    <div className="glass-card" style={{ padding: 'var(--space-6)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)', marginBottom: 'var(--space-5)', paddingBottom: 'var(--space-4)', borderBottom: '1px solid var(--border-primary)' }}>
+        <div style={{ width: 36, height: 36, background: 'rgba(16,185,129,0.1)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-primary)' }}>
+          {icon}
+        </div>
+        <h2 style={{ fontWeight: 700, fontSize: 'var(--text-base)' }}>{title}</h2>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+        {children}
       </div>
     </div>
   );

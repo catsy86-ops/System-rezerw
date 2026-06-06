@@ -46,6 +46,19 @@ export default function ReservationsPage() {
   // Edycja rezerwacji
   const [editing, setEditing] = useState<Reservation | null>(null);
 
+  // Dodawanie nowej rezerwacji
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [createForm, setCreateForm] = useState({
+    serviceId: '',
+    date: '',
+    time: '',
+    clientFirstName: '',
+    clientLastName: '',
+    clientEmail: '',
+    clientPhone: '',
+    notes: '',
+  });
+
   // Widok kalendarza i nawigacja po tygodniach
   const [viewMode, setViewMode] = useState<'table' | 'calendar'>('table');
   const [currentWeekStart, setCurrentWeekStart] = useState<Date>(() => {
@@ -123,6 +136,27 @@ export default function ReservationsPage() {
       fetchAll();
     } catch (err: any) {
       toast.error('Błąd zapisu', err.message || 'Nie udało się zaktualizować rezerwacji. Sprawdź poprawność danych.');
+    }
+  };
+
+  const handleCreateReservation = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await reservationsApi.create({
+        serviceId: createForm.serviceId,
+        date: createForm.date,
+        time: createForm.time,
+        firstName: createForm.clientFirstName,
+        lastName: createForm.clientLastName,
+        email: createForm.clientEmail,
+        phone: createForm.clientPhone,
+        notes: createForm.notes,
+      });
+      setShowCreateModal(false);
+      toast.success('Dodano rezerwację', 'Nowa wizyta została pomyślnie zapisana.');
+      fetchAll();
+    } catch (err: any) {
+      toast.error('Błąd dodawania', err.message || 'Nie udało się dodać rezerwacji. Sprawdź poprawność danych lub ewentualne konflikty.');
     }
   };
 
@@ -245,6 +279,27 @@ export default function ReservationsPage() {
             <RefreshCw size={14} />
             Odśwież
           </button>
+          <button
+            id="add-booking-btn"
+            className="btn btn-primary btn-sm"
+            onClick={() => {
+              setShowCreateModal(true);
+              setCreateForm({
+                serviceId: services[0]?.id || '',
+                date: '',
+                time: '',
+                clientFirstName: '',
+                clientLastName: '',
+                clientEmail: '',
+                clientPhone: '',
+                notes: '',
+              });
+            }}
+            style={{ display: 'flex', alignItems: 'center', gap: 6 }}
+          >
+            <Plus size={14} />
+            Dodaj rezerwację
+          </button>
         </div>
       </div>
 
@@ -321,7 +376,8 @@ export default function ReservationsPage() {
             </div>
           ) : (
             <div className="table-container" style={{ border: 'none', borderRadius: 0 }}>
-              <table className="table">
+              {/* Tabela widoczna na desktopie */}
+              <table className="table hidden-mobile">
                 <thead>
                   <tr>
                     <th>Klient</th>
@@ -439,6 +495,102 @@ export default function ReservationsPage() {
                   ))}
                 </tbody>
               </table>
+
+              {/* Lista kart widoczna na mobilkach */}
+              <div className="hidden-desktop" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', padding: 'var(--space-3)' }}>
+                {reservations.map(r => (
+                  <div key={r.id} className="glass-card" style={{ padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
+                        <div className="avatar">
+                          {r.clientFirstName[0]}{r.clientLastName[0]}
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 600, fontSize: 'var(--text-sm)' }}>
+                            {r.clientFirstName} {r.clientLastName}
+                          </div>
+                          <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
+                            {r.clientPhone}
+                          </div>
+                        </div>
+                      </div>
+                      <StatusBadge status={r.status} />
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, padding: 'var(--space-2) 0', borderTop: '1px solid var(--border-primary)', borderBottom: '1px solid var(--border-primary)', fontSize: 'var(--text-xs)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--text-muted)' }}>Usługa:</span>
+                        <span style={{ fontWeight: 550, display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span style={{ width: 8, height: 8, borderRadius: '50%', background: getServiceColor(r.serviceId) }} />
+                          {r.serviceName}
+                        </span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--text-muted)' }}>Termin:</span>
+                        <span style={{ fontWeight: 550 }}>{formatDate(r.date)} o {r.time}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <span style={{ color: 'var(--text-muted)' }}>Kwota:</span>
+                        <span style={{ fontWeight: 600, color: 'var(--accent-primary)' }}>{formatCurrency(r.servicePrice)}</span>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-2)' }}>
+                      <button
+                        className="btn btn-secondary btn-sm btn-icon"
+                        onClick={() => setSelected(r)}
+                        aria-label="Podgląd"
+                        title="Podgląd"
+                      >
+                        <Eye size={14} />
+                      </button>
+                      <button
+                        className="btn btn-secondary btn-sm btn-icon"
+                        onClick={() => setEditing(r)}
+                        aria-label="Edytuj"
+                        title="Edytuj rezerwację"
+                      >
+                        <Edit size={14} />
+                      </button>
+                      {r.status === 'oczekujaca' && (
+                        <button
+                          className="btn btn-secondary btn-sm btn-icon"
+                          onClick={() => updateStatus(r.id, 'potwierdzona')}
+                          disabled={updating === r.id}
+                          style={{ color: 'var(--status-success)', borderColor: 'rgba(16,185,129,0.2)' }}
+                          aria-label="Potwierdź"
+                          title="Potwierdź"
+                        >
+                          <CheckCircle size={14} />
+                        </button>
+                      )}
+                      {r.status === 'potwierdzona' && (
+                        <button
+                          className="btn btn-secondary btn-sm btn-icon"
+                          onClick={() => updateStatus(r.id, 'zakonczona')}
+                          disabled={updating === r.id}
+                          style={{ color: 'var(--status-info)', borderColor: 'rgba(99,102,241,0.2)' }}
+                          aria-label="Zakończ"
+                          title="Zakończ"
+                        >
+                          <CheckCircle size={14} />
+                        </button>
+                      )}
+                      {r.status !== 'anulowana' && r.status !== 'zakonczona' && (
+                        <button
+                          className="btn btn-danger btn-sm btn-icon"
+                          onClick={() => updateStatus(r.id, 'anulowana')}
+                          disabled={updating === r.id}
+                          aria-label="Anuluj"
+                          title="Anuluj"
+                        >
+                          <XCircle size={14} />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -769,6 +921,138 @@ export default function ReservationsPage() {
             </div>
           </form>
         )}
+      </Modal>
+
+      {/* Create Modal */}
+      <Modal
+        open={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        title="Nowa rezerwacja"
+        size="md"
+      >
+        <form onSubmit={handleCreateReservation} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+            <div className="form-group">
+              <label className="form-label">Imię klienta</label>
+              <input
+                id="create-firstName"
+                type="text"
+                value={createForm.clientFirstName}
+                onChange={e => setCreateForm({ ...createForm, clientFirstName: e.target.value })}
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Nazwisko klienta</label>
+              <input
+                id="create-lastName"
+                type="text"
+                value={createForm.clientLastName}
+                onChange={e => setCreateForm({ ...createForm, clientLastName: e.target.value })}
+                className="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                id="create-email"
+                type="email"
+                value={createForm.clientEmail}
+                onChange={e => setCreateForm({ ...createForm, clientEmail: e.target.value })}
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Telefon</label>
+              <input
+                id="create-phone"
+                type="text"
+                value={createForm.clientPhone}
+                onChange={e => setCreateForm({ ...createForm, clientPhone: e.target.value })}
+                className="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="divider" style={{ margin: 'var(--space-2) 0' }} />
+
+          <div className="form-group">
+            <label className="form-label">Usługa</label>
+            <select
+              id="create-serviceId"
+              value={createForm.serviceId}
+              onChange={e => setCreateForm({ ...createForm, serviceId: e.target.value })}
+              className="form-input form-select"
+              required
+            >
+              {services.map(s => (
+                <option key={s.id} value={s.id}>
+                  {s.name} ({s.duration} min) — {formatCurrency(s.price)}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
+            <div className="form-group">
+              <label className="form-label">Data</label>
+              <input
+                id="create-date"
+                type="date"
+                value={createForm.date}
+                onChange={e => setCreateForm({ ...createForm, date: e.target.value })}
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Godzina</label>
+              <input
+                id="create-time"
+                type="time"
+                value={createForm.time}
+                onChange={e => setCreateForm({ ...createForm, time: e.target.value })}
+                className="form-input"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Uwagi do wizyty</label>
+            <textarea
+              id="create-notes"
+              value={createForm.notes}
+              onChange={e => setCreateForm({ ...createForm, notes: e.target.value })}
+              className="form-input"
+              rows={3}
+            />
+          </div>
+
+          <div style={{ display: 'flex', gap: 'var(--space-3)', justifyContent: 'flex-end', marginTop: 'var(--space-2)' }}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => setShowCreateModal(false)}
+            >
+              Anuluj
+            </button>
+            <button
+              id="submit-create-booking"
+              type="submit"
+              className="btn btn-primary"
+            >
+              Zapisz wizytę
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );
