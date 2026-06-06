@@ -1,8 +1,11 @@
+'use client';
+
 // ============================================================
 // STRONA GŁÓWNA — Landing Page
 // ============================================================
 
 import Link from 'next/link';
+import { motion, Variants } from 'framer-motion';
 import {
   Calendar,
   Clock,
@@ -18,11 +21,20 @@ import {
   MapPin,
   ChevronRight,
 } from 'lucide-react';
-import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'naŁuczniczej — Ekskluzywny Salon Fryzjersko-Kosmetyczny',
-  description: 'Zarezerwuj wizytę w salonie naŁuczniczej online. Szybko, wygodnie i bez rejestracji.',
+const fadeInUp: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 1, 0.5, 1] } }
+};
+
+const staggerContainer: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
 };
 
 const FEATURES = [
@@ -167,16 +179,24 @@ export default function HomePage() {
           }}
         />
 
-        <div style={{ position: 'relative', maxWidth: 720, margin: '0 auto' }}>
-          <div
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={staggerContainer}
+          style={{ position: 'relative', maxWidth: 720, margin: '0 auto' }}
+        >
+          <motion.div
+            variants={fadeInUp}
             className="badge badge-success"
             style={{ marginBottom: 'var(--space-6)', display: 'inline-flex', background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.3)', color: 'var(--accent-primary)' }}
           >
             <Star size={12} fill="currentColor" />
             Luksusowy salon w Twojej okolicy
-          </div>
+          </motion.div>
 
-          <h1
+          <motion.h1
+            variants={fadeInUp}
             style={{
               fontSize: 'clamp(2.5rem, 6vw, 4rem)',
               fontWeight: 900,
@@ -188,9 +208,10 @@ export default function HomePage() {
             Poczuj wyjątkową{' '}
             <span className="text-gradient">jakość i precyzję</span>{' '}
             naŁuczniczej
-          </h1>
+          </motion.h1>
 
-          <p
+          <motion.p
+            variants={fadeInUp}
             style={{
               fontSize: 'var(--text-lg)',
               color: 'var(--text-secondary)',
@@ -201,9 +222,12 @@ export default function HomePage() {
           >
             Ekskluzywne zabiegi fryzjerskie i kosmetyczne dopasowane do Twoich potrzeb.
             Zarezerwuj wolny termin w kilka sekund — bez zbędnych formalności.
-          </p>
+          </motion.p>
 
-          <div className="flex items-center justify-center gap-4 flex-wrap">
+          <motion.div
+            variants={fadeInUp}
+            className="flex items-center justify-center gap-4 flex-wrap"
+          >
             <Link href="/rezerwacja" className="btn btn-primary btn-lg">
               <Calendar size={20} />
               Umów wizytę teraz
@@ -213,10 +237,11 @@ export default function HomePage() {
               Panel admina
               <ChevronRight size={16} />
             </Link>
-          </div>
+          </motion.div>
 
           {/* Trust badges */}
-          <div
+          <motion.div
+            variants={fadeInUp}
             className="flex items-center justify-center gap-6 flex-wrap"
             style={{ marginTop: 'var(--space-10)', color: 'var(--text-muted)', fontSize: 'var(--text-sm)' }}
           >
@@ -230,8 +255,8 @@ export default function HomePage() {
                 <span style={{ color: 'var(--text-secondary)' }}>{text}</span>
               </div>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* ── Stats ── */}
@@ -288,7 +313,11 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
@@ -296,8 +325,10 @@ export default function HomePage() {
             }}
           >
             {FEATURES.map(({ icon, title, description, color }, i) => (
-              <div
+              <motion.div
                 key={title}
+                variants={fadeInUp}
+                whileHover={{ y: -6, borderColor: 'var(--accent-secondary)', boxShadow: 'var(--shadow-md)' }}
                 className="glass-card"
                 style={{ padding: 'var(--space-6)', position: 'relative', overflow: 'hidden' }}
               >
@@ -347,9 +378,9 @@ export default function HomePage() {
                 <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 1.6 }}>
                   {description}
                 </p>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -371,7 +402,11 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={staggerContainer}
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
@@ -384,9 +419,11 @@ export default function HomePage() {
                 href="/rezerwacja"
                 style={{ textDecoration: 'none' }}
               >
-                <div
+                <motion.div
+                  variants={fadeInUp}
+                  whileHover={{ y: -6, scale: 1.02, borderColor: color, boxShadow: 'var(--shadow-md)' }}
                   className="glass-card service-card"
-                  style={{ border: `1px solid ${color}20` }}
+                  style={{ border: `1px solid ${color}20`, height: '100%', display: 'flex', flexDirection: 'column' }}
                 >
                   <div style={{ fontSize: '2.5rem', lineHeight: 1, marginBottom: 'var(--space-2)' }}>
                     {icon}
@@ -410,10 +447,10 @@ export default function HomePage() {
                     <span style={{ color, fontWeight: 700, fontSize: 'var(--text-sm)' }}>{price}</span>
                     <ArrowRight size={14} color={color} />
                   </div>
-                </div>
+                </motion.div>
               </Link>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 

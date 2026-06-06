@@ -5,7 +5,8 @@
 // ============================================================
 
 import { useState, useCallback } from 'react';
-import { CheckCircle, ArrowLeft, Calendar, Clock, User, List } from 'lucide-react';
+import { CheckCircle, ArrowLeft, Calendar, Clock, User, List, Target } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ServicePicker } from '@/components/booking/ServicePicker';
 import { DateTimePicker } from '@/components/booking/DateTimePicker';
 import { ContactForm } from '@/components/booking/ContactForm';
@@ -15,7 +16,6 @@ import { useToast } from '@/components/ui/ToastProvider';
 import { reservationsApi } from '@/lib/api';
 import type { BookingFormData, Service } from '@/types';
 import Link from 'next/link';
-import { Sparkles } from 'lucide-react';
 
 const STEPS = [
   { id: 1, label: 'Usługa', Icon: List },
@@ -74,10 +74,9 @@ export default function BookingPage() {
     try {
       const res = await reservationsApi.create(form);
       setReservationId((res as unknown as { id: string }).id);
-      // Simulate notification
       toast.success(
         'Rezerwacja złożona!',
-        `Potwierdzenie zostało "wysłane" na ${form.email}`
+        `Potwierdzenie zostało zarejestrowane dla ${form.email}`
       );
       setStep(5);
     } catch (err: unknown) {
@@ -121,17 +120,18 @@ export default function BookingPage() {
             style={{
               width: 32,
               height: 32,
-              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark))',
+              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
               borderRadius: 'var(--radius-lg)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              boxShadow: '0 4px 12px rgba(16,185,129,0.2)',
             }}
           >
-            <Sparkles size={14} color="#fff" />
+            <Target size={14} color="#fff" />
           </div>
-          <span style={{ fontWeight: 700, fontSize: 'var(--text-sm)', color: 'var(--text-primary)' }}>
-            Salon Aurora
+          <span style={{ fontWeight: 850, fontSize: 'var(--text-sm)', color: 'var(--text-primary)', letterSpacing: '0.05em' }}>
+            naŁuczniczej
           </span>
         </Link>
         {step < 5 && step > 1 && (
@@ -225,47 +225,57 @@ export default function BookingPage() {
         )}
 
         {/* Step Content */}
-        <div className="page-enter">
-          {step === 1 && (
-            <ServicePicker onSelect={handleServiceSelect} selectedId={form.serviceId} />
-          )}
-          {step === 2 && selectedService && (
-            <DateTimePicker
-              service={selectedService}
-              selectedDate={form.date}
-              selectedTime={form.time}
-              onSelect={handleDateTimeSelect}
-            />
-          )}
-          {step === 3 && (
-            <ContactForm
-              initialData={{
-                firstName: form.firstName,
-                lastName: form.lastName,
-                email: form.email,
-                phone: form.phone,
-                notes: form.notes || '',
-              }}
-              onSubmit={handleContactSubmit}
-            />
-          )}
-          {step === 4 && selectedService && (
-            <BookingSummary
-              form={form}
-              service={selectedService}
-              onConfirm={handleConfirm}
-              onEdit={setStep}
-              submitting={submitting}
-            />
-          )}
-          {step === 5 && (
-            <BookingConfirmation
-              reservationId={reservationId}
-              service={selectedService!}
-              form={form}
-              onReset={handleReset}
-            />
-          )}
+        <div style={{ position: 'relative', overflow: 'hidden' }}>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ opacity: 0, x: 15 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -15 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+            >
+              {step === 1 && (
+                <ServicePicker onSelect={handleServiceSelect} selectedId={form.serviceId} />
+              )}
+              {step === 2 && selectedService && (
+                <DateTimePicker
+                  service={selectedService}
+                  selectedDate={form.date}
+                  selectedTime={form.time}
+                  onSelect={handleDateTimeSelect}
+                />
+              )}
+              {step === 3 && (
+                <ContactForm
+                  initialData={{
+                    firstName: form.firstName,
+                    lastName: form.lastName,
+                    email: form.email,
+                    phone: form.phone,
+                    notes: form.notes || '',
+                  }}
+                  onSubmit={handleContactSubmit}
+                />
+              )}
+              {step === 4 && selectedService && (
+                <BookingSummary
+                  form={form}
+                  service={selectedService}
+                  onConfirm={handleConfirm}
+                  onEdit={setStep}
+                  submitting={submitting}
+                />
+              )}
+              {step === 5 && (
+                <BookingConfirmation
+                  reservationId={reservationId}
+                  service={selectedService!}
+                  form={form}
+                  onReset={handleReset}
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
 
