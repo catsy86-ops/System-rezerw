@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pl">
+    <html lang="pl" data-theme="dark" suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -27,6 +27,30 @@ export default function RootLayout({
                 try {
                   const theme = localStorage.getItem('theme') || 'dark';
                   document.documentElement.setAttribute('data-theme', theme);
+                } catch (e) {}
+                try {
+                  if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                      for (var i = 0; i < registrations.length; i++) {
+                        registrations[i].unregister().then(function(success) {
+                          if (success) {
+                            console.log('Stale ServiceWorker unregistered:', registrations[i]);
+                            if ('caches' in window) {
+                              caches.keys().then(function(keys) {
+                                Promise.all(keys.map(function(key) {
+                                  return caches.delete(key);
+                                }));
+                              });
+                            }
+                            if (!sessionStorage.getItem('sw_reloaded')) {
+                              sessionStorage.setItem('sw_reloaded', 'true');
+                              window.location.reload();
+                            }
+                          }
+                        });
+                      }
+                    });
+                  }
                 } catch (e) {}
               })()
             `,

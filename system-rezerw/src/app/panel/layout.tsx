@@ -38,7 +38,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
           >
             <Menu size={20} />
           </button>
-          <span className="text-sm font-semibold text-primary">System Rezerw</span>
+          <span className="text-sm font-semibold text-primary">naŁuczniczej</span>
         </header>
 
         <main className="page-main page-enter">

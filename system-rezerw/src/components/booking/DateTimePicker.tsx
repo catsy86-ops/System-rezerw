@@ -13,30 +13,16 @@ import {
   getTodayString,
   isDateInPast,
   getDayOfWeek,
-  addMinutes,
 } from '@/lib/formatters';
 import { DAYS_SHORT_PL, MONTHS_PL } from '@/lib/constants';
+import { generateSlots, calculateTakenSlots } from '@/lib/bookingHelpers';
 import type { Reservation, Service } from '@/types';
 
 const WORKING_DAYS = [1, 2, 3, 4, 5, 6]; // Mon-Sat
 const OPEN_TIME = '08:00';
 const CLOSE_TIME = '20:00';
 const INTERVAL = 30;
-
-function generateSlots(open: string, close: string, interval: number): string[] {
-  const slots: string[] = [];
-  const [oh, om] = open.split(':').map(Number);
-  const [ch, cm] = close.split(':').map(Number);
-  let cur = oh * 60 + om;
-  const end = ch * 60 + cm;
-  while (cur < end) {
-    const h = Math.floor(cur / 60).toString().padStart(2, '0');
-    const m = (cur % 60).toString().padStart(2, '0');
-    slots.push(`${h}:${m}`);
-    cur += interval;
-  }
-  return slots;
-}
+const ALL_SLOTS = generateSlots(OPEN_TIME, CLOSE_TIME, INTERVAL);
 
 interface DateTimePickerProps {
   service: Service;
@@ -54,50 +40,33 @@ export function DateTimePicker({ service, selectedDate, selectedTime, onSelect }
   const [takenSlots, setTakenSlots] = useState<string[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
 
-  const allSlots = generateSlots(OPEN_TIME, CLOSE_TIME, INTERVAL);
-
   const fetchTakenSlots = useCallback(async (date: string) => {
     setLoadingSlots(true);
     try {
       const reservations = await reservationsApi.getAll({ dateFrom: date, dateTo: date });
-      const taken: string[] = [];
-      (reservations as unknown as Reservation[])
-        .filter((r: Reservation) => r.status !== 'anulowana')
-        .forEach((r: Reservation) => {
-          // Mark all slots occupied by this reservation
-          let t = r.time;
-          const endTime = addMinutes(r.time, r.serviceDuration);
-          while (t < endTime) {
-            taken.push(t);
-            t = addMinutes(t, INTERVAL);
-          }
-          // Also mark slots where new service would overlap existing
-          const newEnd = addMinutes(t, service.duration);
-          void newEnd; // end of new service
-        });
-      // Mark slots where service would overlap existing
-      const takenFull: string[] = [];
-      allSlots.forEach(slot => {
-        const slotEnd = addMinutes(slot, service.duration);
-        const overlaps = (reservations as unknown as Reservation[])
-          .filter((r: Reservation) => r.status !== 'anulowana')
-          .some((r: Reservation) => {
-            const rStart = r.time;
-            const rEnd = addMinutes(r.time, r.serviceDuration);
-            return slot < rEnd && slotEnd > rStart;
-          });
-        // Also check if service goes past closing time
-        if (overlaps || slotEnd > CLOSE_TIME) {
-          takenFull.push(slot);
-        }
+      
+      const now = new Date();
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      const isTodaySelected = date === getTodayString();
+
+      const taken = calculateTakenSlots({
+        date,
+        reservations: reservations as unknown as Reservation[],
+        serviceDuration: service.duration,
+        allSlots: ALL_SLOTS,
+        closeTime: CLOSE_TIME,
+        intervalMinutes: INTERVAL,
+        isToday: isTodaySelected,
+        currentMinutes,
       });
-      setTakenSlots(takenFull);
+
+      setTakenSlots(taken);
     } catch {
       setTakenSlots([]);
     } finally {
       setLoadingSlots(false);
     }
-  }, [service.duration, allSlots]);
+  }, [service.duration]);
 
   useEffect(() => {
     if (pickedDate) fetchTakenSlots(pickedDate);
@@ -176,7 +145,7 @@ export function DateTimePicker({ service, selectedDate, selectedTime, onSelect }
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)' }}>
+      <div className="date-time-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)' }}>
         {/* Calendar */}
         <div>
           <h3 style={{ fontWeight: 600, marginBottom: 'var(--space-3)', fontSize: 'var(--text-sm)' }}>
@@ -265,7 +234,7 @@ export function DateTimePicker({ service, selectedDate, selectedTime, onSelect }
                 </div>
               )}
               <div className="time-slots" style={{ maxHeight: 280, overflowY: 'auto' }}>
-                {allSlots.map(slot => {
+                {ALL_SLOTS.map(slot => {
                   const taken = takenSlots.includes(slot);
                   const selected = slot === pickedTime;
                   return (

@@ -2,8 +2,8 @@
 // STAŁE APLIKACJI
 // ============================================================
 
-export const APP_NAME = 'System Rezerw';
-export const APP_DESCRIPTION = 'Profesjonalny system rezerwacji wizyt';
+export const APP_NAME = 'naŁuczniczej';
+export const APP_DESCRIPTION = 'Salon & Spa naŁuczniczej - profesjonalne usługi fryzjerskie, kosmetyczne i masażu';
 
 export const STATUS_LABELS: Record<string, string> = {
   oczekujaca: 'Oczekująca',
