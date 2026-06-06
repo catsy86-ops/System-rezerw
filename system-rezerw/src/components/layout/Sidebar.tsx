@@ -14,7 +14,7 @@ import {
   Users,
   Settings,
   X,
-  Sparkles,
+  Target,
   Sun,
   Moon,
 } from 'lucide-react';
@@ -72,12 +72,12 @@ export function Sidebar({ open = true, onClose }: SidebarProps) {
       <aside className={`sidebar ${open ? 'open' : ''}`} aria-label="Nawigacja główna">
         {/* Logo */}
         <div className="sidebar-logo">
-          <div className="sidebar-logo-icon">
-            <Sparkles size={18} color="#fff" />
+          <div className="sidebar-logo-icon" style={{ background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))' }}>
+            <Target size={18} color="#fff" />
           </div>
           <div>
-            <div className="text-sm font-bold text-primary">System Rezerw</div>
-            <div className="text-xs text-muted">Panel zarządzania</div>
+            <div className="text-sm font-extrabold text-primary" style={{ letterSpacing: '0.05em' }}>naŁuczniczej</div>
+            <div className="text-xs text-muted">Salon & Spa</div>
           </div>
           {onClose && (
             <button

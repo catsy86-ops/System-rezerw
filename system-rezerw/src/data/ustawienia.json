@@ -1,9 +1,9 @@
 {
   "settings": {
-    "businessName": "Salon Piękności Aurora",
-    "businessEmail": "kontakt@aurora-salon.pl",
-    "businessPhone": "+48 12 345 67 89",
-    "businessAddress": "ul. Kwiatowa 15, 30-001 Kraków",
+    "businessName": "naŁuczniczej",
+    "businessEmail": "kontakt@naluczniczej.pl",
+    "businessPhone": "+48 91 123 45 67",
+    "businessAddress": "ul. Łucznicza 12, 30-001 Kraków",
     "openTime": "08:00",
     "closeTime": "20:00",
     "slotInterval": 30,

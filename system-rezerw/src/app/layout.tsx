@@ -7,9 +7,9 @@ import './globals.css';
 import { ToastProvider } from '@/components/ui/ToastProvider';
 
 export const metadata: Metadata = {
-  title: 'System Rezerw — Profesjonalne Rezerwacje Wizyt',
-  description: 'Zarezerwuj wizytę w naszym salonie online. Szybko, wygodnie i bez rejestracji.',
-  keywords: 'rezerwacja, salon, wizyta, fryzjer, kosmetyczka, masaż, paznokcie',
+  title: 'naŁuczniczej — Ekskluzywny Salon Fryzjersko-Kosmetyczny',
+  description: 'Zarezerwuj wizytę w salonie naŁuczniczej online. Szybko, wygodnie i bez rejestracji.',
+  keywords: 'fryzjer szczecin, kosmetyczka szczecin, nałuczniczej, salon fryzjerski, paznokcie kraków, rezerwacja online',
 };
 
 export default function RootLayout({

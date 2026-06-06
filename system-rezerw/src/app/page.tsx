@@ -10,7 +10,7 @@ import {
   ArrowRight,
   Scissors,
   Heart,
-  Sparkles,
+  Target,
   Shield,
   CheckCircle,
   Phone,
@@ -21,8 +21,8 @@ import {
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'System Rezerw — Rezerwacja Wizyt Online',
-  description: 'Zarezerwuj wizytę w naszym salonie online. Fryzjer, kosmetyczka, masaż i więcej. Szybko, wygodnie, bez rejestracji.',
+  title: 'naŁuczniczej — Ekskluzywny Salon Fryzjersko-Kosmetyczny',
+  description: 'Zarezerwuj wizytę w salonie naŁuczniczej online. Szybko, wygodnie i bez rejestracji.',
 };
 
 const FEATURES = [
@@ -36,28 +36,28 @@ const FEATURES = [
     icon: <Clock size={24} />,
     title: 'Wybór terminu',
     description: 'Wybierz dogodną datę i godzinę z dostępnych slotów w kalendarzu.',
-    color: '#6366F1',
+    color: '#F59E0B',
   },
   {
     icon: <Shield size={24} />,
     title: 'Potwierdzenie',
-    description: 'Otrzymaj potwierdzenie rezerwacji i przypomnij sobie o wizycie.',
-    color: '#F59E0B',
+    description: 'Otrzymaj natychmiastowe potwierdzenie rezerwacji bezpośrednio na ekranie.',
+    color: '#EC4899',
   },
 ];
 
 const SERVICES_PREVIEW = [
-  { icon: '✂️', name: 'Fryzjerstwo', desc: 'Strzyżenie, koloryzacja, stylizacja', price: 'od 60 zł', color: '#10B981' },
-  { icon: '💅', name: 'Paznokcie', desc: 'Manicure, pedicure, hybryda', price: 'od 80 zł', color: '#EC4899' },
-  { icon: '🧘', name: 'Masaż', desc: 'Relaksacyjny, głęboki, sportowy', price: 'od 180 zł', color: '#06B6D4' },
-  { icon: '🌿', name: 'Kosmetyka', desc: 'Zabiegi na twarz, henna, laminacja', price: 'od 70 zł', color: '#22C55E' },
+  { icon: '✂️', name: 'Fryzjerstwo', desc: 'Strzyżenie, luksusowa koloryzacja, stylizacja', price: 'od 60 zł', color: '#10B981' },
+  { icon: '💅', name: 'Paznokcie', desc: 'Manicure japoński, hybryda, pedicure', price: 'od 80 zł', color: '#EC4899' },
+  { icon: '🧘', name: 'Masaż & Rytuały', desc: 'Masaż relaksacyjny, gorącymi kamieniami', price: 'od 180 zł', color: '#F59E0B' },
+  { icon: '🌿', name: 'Kosmetologia', desc: 'Zabiegi pielęgnacyjne twarzy, infuzja', price: 'od 70 zł', color: '#06B6D4' },
 ];
 
 const STATS = [
-  { value: '500+', label: 'Zadowolonych klientów' },
-  { value: '10', label: 'Rodzajów usług' },
-  { value: '4.9', label: 'Średnia ocena' },
-  { value: '3 lata', label: 'Doświadczenia' },
+  { value: '1200+', label: 'Zadowolonych klientów' },
+  { value: '15', label: 'Luksusowych usług' },
+  { value: '4.95', label: 'Średnia ocena wizyt' },
+  { value: '5 lat', label: 'Doświadczenia' },
 ];
 
 export default function HomePage() {
@@ -84,22 +84,22 @@ export default function HomePage() {
             style={{
               width: 36,
               height: 36,
-              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark))',
+              background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
               borderRadius: 'var(--radius-lg)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(16,185,129,0.3)',
+              boxShadow: '0 4px 14px rgba(16,185,129,0.25)',
             }}
           >
-            <Sparkles size={18} color="#fff" />
+            <Target size={18} color="#fff" />
           </div>
           <div>
-            <div style={{ fontSize: 'var(--text-sm)', fontWeight: 700, color: 'var(--text-primary)' }}>
-              Salon Aurora
+            <div style={{ fontSize: 'var(--text-sm)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '0.05em' }}>
+              naŁuczniczej
             </div>
             <div style={{ fontSize: '10px', color: 'var(--text-muted)', lineHeight: 1 }}>
-              System Rezerw
+              Salon Fryzjersko-Kosmetyczny
             </div>
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'radial-gradient(ellipse 80% 60% at 50% -20%, rgba(16,185,129,0.15) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(99,102,241,0.1) 0%, transparent 50%)',
+            background: 'radial-gradient(ellipse 80% 60% at 50% -20%, rgba(16,185,129,0.15) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,158,11,0.1) 0%, transparent 50%)',
             pointerEvents: 'none',
           }}
         />
@@ -159,7 +159,7 @@ export default function HomePage() {
             width: 300,
             height: 300,
             borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%)',
+            background: 'radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%)',
             bottom: '10%',
             right: '5%',
             animation: 'float 10s ease-in-out infinite reverse',
@@ -170,10 +170,10 @@ export default function HomePage() {
         <div style={{ position: 'relative', maxWidth: 720, margin: '0 auto' }}>
           <div
             className="badge badge-success"
-            style={{ marginBottom: 'var(--space-6)', display: 'inline-flex' }}
+            style={{ marginBottom: 'var(--space-6)', display: 'inline-flex', background: 'rgba(16,185,129,0.1)', borderColor: 'rgba(16,185,129,0.3)', color: 'var(--accent-primary)' }}
           >
-            <Star size={12} />
-            Numer 1 w Krakowie
+            <Star size={12} fill="currentColor" />
+            Luksusowy salon w Twojej okolicy
           </div>
 
           <h1
@@ -185,9 +185,9 @@ export default function HomePage() {
               letterSpacing: '-0.02em',
             }}
           >
-            Zarezerwuj wizytę{' '}
-            <span className="text-gradient">online</span>{' '}
-            w kilka sekund
+            Poczuj wyjątkową{' '}
+            <span className="text-gradient">jakość i precyzję</span>{' '}
+            naŁuczniczej
           </h1>
 
           <p
@@ -199,8 +199,8 @@ export default function HomePage() {
               lineHeight: 1.7,
             }}
           >
-            Profesjonalne usługi beauty w jednym miejscu. Wybierz usługę, termin i gotowe —
-            bez rejestracji, bez czekania.
+            Ekskluzywne zabiegi fryzjerskie i kosmetyczne dopasowane do Twoich potrzeb.
+            Zarezerwuj wolny termin w kilka sekund — bez zbędnych formalności.
           </p>
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
@@ -221,11 +221,11 @@ export default function HomePage() {
             style={{ marginTop: 'var(--space-10)', color: 'var(--text-muted)', fontSize: 'var(--text-sm)' }}
           >
             {[
-              { icon: <CheckCircle size={14} />, text: 'Bez rejestracji' },
-              { icon: <CheckCircle size={14} />, text: 'Bezpłatna anulacja' },
-              { icon: <CheckCircle size={14} />, text: 'Potwierdzenie w chwilę' },
+              { icon: <CheckCircle size={14} />, text: 'Bez zakładania konta' },
+              { icon: <CheckCircle size={14} />, text: 'Bezpłatna anulacja online' },
+              { icon: <CheckCircle size={14} />, text: 'Precyzja i profesjonalizm' },
             ].map(({ icon, text }) => (
-              <div key={text} className="flex items-center gap-2" style={{ color: 'var(--accent-primary)' }}>
+              <div key={text} className="flex items-center gap-2" style={{ color: 'var(--accent-secondary)' }}>
                 {icon}
                 <span style={{ color: 'var(--text-secondary)' }}>{text}</span>
               </div>
@@ -480,19 +480,19 @@ export default function HomePage() {
                 style={{
                   width: 32,
                   height: 32,
-                  background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark))',
+                  background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
                   borderRadius: 'var(--radius-lg)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <Sparkles size={14} color="#fff" />
+                <Target size={14} color="#fff" />
               </div>
-              <span style={{ fontWeight: 700 }}>Salon Aurora</span>
+              <span style={{ fontWeight: 800, letterSpacing: '0.05em' }}>naŁuczniczej</span>
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)', lineHeight: 1.6 }}>
-              Profesjonalne usługi beauty w sercu Krakowa. Zadbaj o siebie z nami.
+              Ekskluzywne usługi fryzjerskie i kosmetyczne. Precyzja i jakość, której szukasz.
             </p>
           </div>
 
@@ -502,12 +502,12 @@ export default function HomePage() {
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
               {[
-                { icon: <Phone size={14} />, text: '+48 12 345 67 89' },
-                { icon: <Mail size={14} />, text: 'kontakt@aurora-salon.pl' },
-                { icon: <MapPin size={14} />, text: 'ul. Kwiatowa 15, Kraków' },
+                { icon: <Phone size={14} />, text: '+48 91 123 45 67' },
+                { icon: <Mail size={14} />, text: 'kontakt@naluczniczej.pl' },
+                { icon: <MapPin size={14} />, text: 'ul. Łucznicza 12, Kraków' },
               ].map(({ icon, text }) => (
                 <div key={text} className="flex items-center gap-2" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
-                  <span style={{ color: 'var(--accent-primary)' }}>{icon}</span>
+                  <span style={{ color: 'var(--accent-secondary)' }}>{icon}</span>
                   {text}
                 </div>
               ))}
@@ -546,9 +546,9 @@ export default function HomePage() {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-            <div>© 2026 Salon Aurora. Wszelkie prawa zastrzeżone.</div>
+            <div>© 2026 naŁuczniczej. Wszelkie prawa zastrzeżone. Powered by System Rezerw.</div>
             <div>
-              <Link href="/anuluj" style={{ color: 'var(--status-danger)', textDecoration: 'underline', fontWeight: 500 }}>
+              <Link href="/anuluj" style={{ color: 'var(--status-danger)', textDecoration: 'underline', fontWeight: 550 }}>
                 Chcesz anulować lub zarządzać wizytą? Kliknij tutaj
               </Link>
             </div>

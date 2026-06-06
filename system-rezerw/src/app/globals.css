@@ -15,10 +15,10 @@
   --accent-primary: #10B981;
   --accent-primary-light: #34D399;
   --accent-primary-dark: #059669;
-  --accent-primary-glow: rgba(16, 185, 129, 0.2);
-  --accent-secondary: #6366F1;
-  --accent-secondary-light: #818CF8;
-  --accent-secondary-glow: rgba(99, 102, 241, 0.2);
+  --accent-primary-glow: rgba(16, 185, 129, 0.15);
+  --accent-secondary: #F59E0B;
+  --accent-secondary-light: #FBBF24;
+  --accent-secondary-glow: rgba(245, 158, 11, 0.15);
 
   --text-primary: #F1F5F9;
   --text-secondary: #94A3B8;
@@ -165,14 +165,14 @@ input, textarea, select { font-family: inherit; }
 
 /* ── Typography ─────────────────────────────────────────────── */
 .text-gradient {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary-light));
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-gold {
-  background: linear-gradient(135deg, #F59E0B, #F97316);
+  background: linear-gradient(135deg, var(--accent-secondary), #F59E0B);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -224,13 +224,13 @@ input, textarea, select { font-family: inherit; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary-dark));
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
   color: #fff;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.35);
   transform: translateY(-1px);
 }
 
