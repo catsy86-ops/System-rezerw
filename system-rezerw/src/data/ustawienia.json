@@ -1,0 +1,14 @@
+{
+  "settings": {
+    "businessName": "Salon Piękności Aurora",
+    "businessEmail": "kontakt@aurora-salon.pl",
+    "businessPhone": "+48 12 345 67 89",
+    "businessAddress": "ul. Kwiatowa 15, 30-001 Kraków",
+    "openTime": "08:00",
+    "closeTime": "20:00",
+    "slotInterval": 30,
+    "workingDays": [1, 2, 3, 4, 5, 6],
+    "currency": "PLN",
+    "timezone": "Europe/Warsaw"
+  }
+}

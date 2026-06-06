@@ -1,0 +1,114 @@
+{
+  "clients": [
+    {
+      "id": "cli-001",
+      "firstName": "Anna",
+      "lastName": "Kowalska",
+      "email": "anna.kowalska@example.com",
+      "phone": "+48 501 234 567",
+      "notes": "Alergia na produkty z orzechami",
+      "createdAt": "2025-11-15T10:00:00Z",
+      "totalBookings": 8,
+      "totalSpent": 960
+    },
+    {
+      "id": "cli-002",
+      "firstName": "Marek",
+      "lastName": "Nowak",
+      "email": "marek.nowak@example.com",
+      "phone": "+48 502 345 678",
+      "notes": "",
+      "createdAt": "2025-12-01T10:00:00Z",
+      "totalBookings": 5,
+      "totalSpent": 300
+    },
+    {
+      "id": "cli-003",
+      "firstName": "Joanna",
+      "lastName": "Wiśniewska",
+      "email": "joanna.w@example.com",
+      "phone": "+48 503 456 789",
+      "notes": "Preferuje poranne wizyty",
+      "createdAt": "2026-01-10T10:00:00Z",
+      "totalBookings": 6,
+      "totalSpent": 1080
+    },
+    {
+      "id": "cli-004",
+      "firstName": "Piotr",
+      "lastName": "Zielinski",
+      "email": "piotr.z@example.com",
+      "phone": "+48 504 567 890",
+      "notes": "",
+      "createdAt": "2026-01-22T10:00:00Z",
+      "totalBookings": 3,
+      "totalSpent": 420
+    },
+    {
+      "id": "cli-005",
+      "firstName": "Katarzyna",
+      "lastName": "Lewandowska",
+      "email": "kasia.l@example.com",
+      "phone": "+48 505 678 901",
+      "notes": "Wrażliwa skóra głowy",
+      "createdAt": "2026-02-05T10:00:00Z",
+      "totalBookings": 4,
+      "totalSpent": 560
+    },
+    {
+      "id": "cli-006",
+      "firstName": "Tomasz",
+      "lastName": "Wróbel",
+      "email": "tomasz.w@example.com",
+      "phone": "+48 506 789 012",
+      "notes": "",
+      "createdAt": "2026-02-18T10:00:00Z",
+      "totalBookings": 2,
+      "totalSpent": 120
+    },
+    {
+      "id": "cli-007",
+      "firstName": "Magdalena",
+      "lastName": "Kaminska",
+      "email": "magda.k@example.com",
+      "phone": "+48 507 890 123",
+      "notes": "",
+      "createdAt": "2026-03-01T10:00:00Z",
+      "totalBookings": 3,
+      "totalSpent": 640
+    },
+    {
+      "id": "cli-008",
+      "firstName": "Bartosz",
+      "lastName": "Jankowski",
+      "email": "bart.j@example.com",
+      "phone": "+48 508 901 234",
+      "notes": "Przyszedł z polecenia Anny Kowalskiej",
+      "createdAt": "2026-03-20T10:00:00Z",
+      "totalBookings": 2,
+      "totalSpent": 180
+    },
+    {
+      "id": "cli-009",
+      "firstName": "Natalia",
+      "lastName": "Mazur",
+      "email": "natalia.m@example.com",
+      "phone": "+48 509 012 345",
+      "notes": "",
+      "createdAt": "2026-04-08T10:00:00Z",
+      "totalBookings": 2,
+      "totalSpent": 290
+    },
+    {
+      "id": "cli-010",
+      "firstName": "Karol",
+      "lastName": "Wojcik",
+      "email": "karol.w@example.com",
+      "phone": "+48 510 123 456",
+      "notes": "",
+      "createdAt": "2026-05-15T10:00:00Z",
+      "totalBookings": 1,
+      "totalSpent": 60
+    }
+  ]
+}

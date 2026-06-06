@@ -1,0 +1,114 @@
+{
+  "services": [
+    {
+      "id": "svc-001",
+      "name": "Strzyżenie damskie",
+      "description": "Profesjonalne strzyżenie włosów damskich z mycie i stylizacją",
+      "duration": 60,
+      "price": 120,
+      "category": "fryzjerstwo",
+      "icon": "✂️",
+      "active": true,
+      "color": "#10B981"
+    },
+    {
+      "id": "svc-002",
+      "name": "Strzyżenie męskie",
+      "description": "Klasyczne lub nowoczesne strzyżenie męskie z wash & go",
+      "duration": 30,
+      "price": 60,
+      "category": "fryzjerstwo",
+      "icon": "💈",
+      "active": true,
+      "color": "#3B82F6"
+    },
+    {
+      "id": "svc-003",
+      "name": "Koloryzacja",
+      "description": "Koloryzacja lub pasemka z pielęgnacją i stylizacją",
+      "duration": 120,
+      "price": 250,
+      "category": "fryzjerstwo",
+      "icon": "🎨",
+      "active": true,
+      "color": "#F59E0B"
+    },
+    {
+      "id": "svc-004",
+      "name": "Manicure klasyczny",
+      "description": "Pielęgnacja dłoni i paznokci z lakierowaniem",
+      "duration": 45,
+      "price": 80,
+      "category": "paznokcie",
+      "icon": "💅",
+      "active": true,
+      "color": "#EC4899"
+    },
+    {
+      "id": "svc-005",
+      "name": "Manicure hybrydowy",
+      "description": "Trwały manicure hybrydowy utrzymujący się 3-4 tygodnie",
+      "duration": 60,
+      "price": 110,
+      "category": "paznokcie",
+      "icon": "🌸",
+      "active": true,
+      "color": "#8B5CF6"
+    },
+    {
+      "id": "svc-006",
+      "name": "Masaż relaksacyjny",
+      "description": "Godzinny masaż całego ciała redukujący napięcie i stres",
+      "duration": 60,
+      "price": 180,
+      "category": "masaz",
+      "icon": "🧘",
+      "active": true,
+      "color": "#06B6D4"
+    },
+    {
+      "id": "svc-007",
+      "name": "Masaż głęboki",
+      "description": "Intensywny masaż tkanek głębokich na bóle mięśniowe",
+      "duration": 90,
+      "price": 240,
+      "category": "masaz",
+      "icon": "💆",
+      "active": true,
+      "color": "#EF4444"
+    },
+    {
+      "id": "svc-008",
+      "name": "Zabieg na twarz",
+      "description": "Oczyszczanie i nawilżanie twarzy z maską witaminową",
+      "duration": 75,
+      "price": 200,
+      "category": "kosmetyka",
+      "icon": "🌿",
+      "active": true,
+      "color": "#22C55E"
+    },
+    {
+      "id": "svc-009",
+      "name": "Henna brwi",
+      "description": "Stylizacja i barwienie brwi henną z regulacją",
+      "duration": 30,
+      "price": 70,
+      "category": "kosmetyka",
+      "icon": "👁️",
+      "active": true,
+      "color": "#D97706"
+    },
+    {
+      "id": "svc-010",
+      "name": "Laminacja rzęs",
+      "description": "Trwałe zagęszczenie i wygięcie rzęs metodą laminacji",
+      "duration": 60,
+      "price": 160,
+      "category": "kosmetyka",
+      "icon": "✨",
+      "active": false,
+      "color": "#A855F7"
+    }
+  ]
+}
