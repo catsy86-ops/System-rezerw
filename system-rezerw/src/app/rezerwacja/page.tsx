@@ -47,9 +47,13 @@ export default function BookingPage() {
     setForm(prev => ({ ...prev, ...updates }));
   }, []);
 
-  const handleServiceSelect = (service: Service) => {
+  const handleServiceSelect = async (service: Service) => {
     setSelectedService(service);
     updateForm({ serviceId: service.id, date: '', time: '' });
+    
+    // Prefetch logic - optional but recommended for UX
+    // We could prefetch slots for the next 7 days here if we wanted to be extreme
+    
     setStep(2);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -159,7 +163,7 @@ export default function BookingPage() {
             <Target size={16} color="#fff" />
           </div>
           <span style={{ fontWeight: 900, fontSize: 'var(--text-base)', color: 'var(--text-primary)', letterSpacing: '0.08em' }}>
-            uFisza
+            Nocny Promil
           </span>
         </Link>
         
@@ -267,7 +271,7 @@ export default function BookingPage() {
                   {step === 4 && 'Sprawdź i potwierdź'}
                 </h1>
                 <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', maxWidth: 480, margin: '0 auto' }}>
-                  {step === 1 && 'Wybierz jedną z naszych luksusowych usług fryzjerskich.'}
+                  {step === 1 && 'Wybierz produkty z naszej nocnej oferty.'}
                   {step === 2 && 'Nasz kalendarz jest zawsze aktualny. Wybierz termin, który Ci pasuje.'}
                   {step === 3 && 'Wypełnij dane, abyśmy mogli wysłać Ci potwierdzenie wizyty.'}
                   {step === 4 && 'Prawie gotowe! Upewnij się, że wszystko się zgadza.'}

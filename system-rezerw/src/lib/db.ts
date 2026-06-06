@@ -36,17 +36,18 @@ export function readJson<T>(filename: string): T {
 }
 
 // Simple in-memory lock to prevent concurrent writes in the same process
-const locks: Record<string, Promise<void>> = {};
+const locks: Record<string, Promise<any>> = {};
 
 export async function writeJson<T>(filename: string, data: T): Promise<void> {
   const filePath = getFilePath(filename);
   
   // Wait for previous write on this file to finish
-  if (locks[filename]) {
-    await locks[filename];
+  const prevLock = locks[filename];
+  if (prevLock) {
+    await prevLock.catch(() => {}); // ignore errors in previous lock
   }
 
-  let resolveLock: () => void;
+  let resolveLock: (value?: any) => void;
   locks[filename] = new Promise((resolve) => {
     resolveLock = resolve;
   });

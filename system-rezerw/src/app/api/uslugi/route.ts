@@ -4,6 +4,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllServices, saveAllServices, generateId } from '@/lib/db';
+import { serviceSchema } from '@/lib/validators';
 import type { Service } from '@/types';
 
 export async function GET() {
@@ -18,22 +19,22 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, description, duration, price, category, icon, color, active } = body;
-
-    if (!name || !description || !duration || price === undefined) {
-      return NextResponse.json({ success: false, error: 'Brakujące wymagane pola' }, { status: 400 });
+    
+    // Walidacja Zod
+    const result = serviceSchema.safeParse(body);
+    if (!result.success) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Błąd walidacji danych usługi', 
+        details: result.error.flatten().fieldErrors 
+      }, { status: 400 });
     }
 
+    const serviceData = result.data;
+
     const service: Service = {
+      ...serviceData,
       id: generateId('svc'),
-      name,
-      description,
-      duration: Number(duration),
-      price: Number(price),
-      category: category || 'inne',
-      icon: icon || '⭐',
-      active: active ?? true,
-      color: color || '#10B981',
     };
 
     const services = getAllServices();

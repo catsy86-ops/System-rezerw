@@ -3,7 +3,7 @@
 // ============================================================
 
 export type ReservationStatus = 'oczekujaca' | 'potwierdzona' | 'zakonczona' | 'anulowana';
-export type ServiceCategory = 'fryzjerstwo' | 'kosmetyka' | 'masaz' | 'paznokcie' | 'inne';
+export type ServiceCategory = 'wódka' | 'piwo' | 'wino' | 'whisky' | 'przekąski' | 'inne';
 
 // ── Usługa ──────────────────────────────────────────────────
 export interface Service {

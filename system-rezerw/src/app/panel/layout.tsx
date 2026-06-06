@@ -65,7 +65,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
               <Target size={14} color="#fff" />
             </div>
             <span style={{ fontSize: 'var(--text-sm)', fontWeight: 800, letterSpacing: '0.02em' }}>
-              uFisza
+              Nocny Promil
             </span>
           </div>
 

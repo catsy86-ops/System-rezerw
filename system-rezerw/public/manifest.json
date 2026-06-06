@@ -1,7 +1,7 @@
 {
-  "name": "uFisza",
-  "short_name": "uFisza",
-  "description": "Ekskluzywny Salon Fryzjerski - System Rezerwacji",
+  "name": "Nocny Promil",
+  "short_name": "Nocny Promil",
+  "description": "Nocny Promil - Błyskawiczny Dowóz Alkoholu",
   "start_url": "/panel",
   "display": "standalone",
   "background_color": "#0a0f1a",

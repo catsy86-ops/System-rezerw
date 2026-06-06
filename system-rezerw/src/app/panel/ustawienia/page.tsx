@@ -16,9 +16,11 @@ const DEFAULT_SETTINGS: BusinessSettings = {
   businessPhone: '',
   businessAddress: '',
   openTime: '08:00',
-  closeTime: '20:00',
+  closeTime: '06:00',
   slotInterval: 30,
-  workingDays: [1, 2, 3, 4, 5, 6],
+  bufferTime: 0,
+  workingDays: [0, 1, 2, 3, 4, 5, 6],
+
   currency: 'PLN',
   timezone: 'Europe/Warsaw',
 };
@@ -90,7 +92,7 @@ export default function SettingsPage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-4)' }}>
           <div className="form-group">
             <label className="form-label" htmlFor="biz-name">Nazwa salonu</label>
-            <input id="biz-name" className="form-input" value={settings.businessName} onChange={e => set('businessName', e.target.value)} placeholder="Salon Aurora" />
+            <input id="biz-name" className="form-input" value={settings.businessName} onChange={e => set('businessName', e.target.value)} placeholder="Nocny Promil" />
           </div>
           <div className="form-group">
             <label className="form-label" htmlFor="biz-phone">Telefon</label>
@@ -239,7 +241,7 @@ export default function SettingsPage() {
       <Section icon={<div style={{ width: 18, height: 18, background: '#4285F4', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '10px', fontWeight: 900 }}>G</div>} title="Integracja z Kalendarzem Google">
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
           <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-            Synchronizuj wizyty uFisza ze swoim prywatnym kalendarzem Google. Pracownicy będą mogli widzieć grafik na swoich telefonach.
+            Synchronizuj zamówienia Nocny Promil ze swoim prywatnym kalendarzem Google. Pracownicy będą mogli widzieć grafik na swoich telefonach.
           </p>
           
           <div style={{ padding: 'var(--space-4)', background: 'rgba(66, 133, 244, 0.05)', border: '1px solid rgba(66, 133, 244, 0.2)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-4)' }}>

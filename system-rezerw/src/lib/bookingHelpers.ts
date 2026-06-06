@@ -39,7 +39,7 @@ interface CalculateTakenSlotsParams {
 /**
  * Oblicza listę zablokowanych (zajętych) slotów godzinowych na podstawie:
  * - istniejących rezerwacji (nakładanie się czasowe usługi + czas buforowy)
- * - przekroczenia godziny zamknięcia salonu
+ * - przekroczenia godziny zakończenia pracy kurierów
  * - slotów z przeszłości (jeżeli rezerwacja jest robiona na dziś)
  */
 export function calculateTakenSlots({

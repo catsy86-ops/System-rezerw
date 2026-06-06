@@ -1,94 +1,63 @@
-// ============================================================
-// WALIDACJA FORMULARZY
-// ============================================================
+import { z } from 'zod';
 
-export interface ValidationError {
+export const bookingSchema = z.object({
+  serviceId: z.string().min(1, 'Wybierz usługę'),
+  date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Nieprawidłowy format daty'),
+  time: z.string().regex(/^\d{2}:\d{2}$/, 'Nieprawidłowy format godziny'),
+  firstName: z.string().min(2, 'Imię musi mieć min. 2 znaki'),
+  lastName: z.string().min(2, 'Nazwisko musi mieć min. 2 znaki'),
+  email: z.string().email('Nieprawidłowy adres e-mail'),
+  phone: z.string().min(9, 'Numer telefonu jest za krótki'),
+  notes: z.string().optional(),
+});
+
+export const serviceSchema = z.object({
+  name: z.string().min(3, 'Nazwa musi mieć min. 3 znaki'),
+  description: z.string().min(10, 'Opis musi mieć min. 10 znaków'),
+  duration: z.number().min(5, 'Minimalny czas trwania to 5 min'),
+  price: z.number().min(0, 'Cena nie może być ujemna'),
+  category: z.enum(['wódka', 'piwo', 'wino', 'whisky', 'przekąski', 'inne']),
+  icon: z.string().min(1),
+  color: z.string().regex(/^#[0-9A-Fa-f]{6}$/, 'Nieprawidłowy kolor HEX'),
+  active: z.boolean(),
+});
+
+export type ValidationError = {
   field: string;
   message: string;
+};
+
+export const contactSchema = z.object({
+  firstName: z.string().min(2, 'Imię musi mieć min. 2 znaki'),
+  lastName: z.string().min(2, 'Nazwisko musi mieć min. 2 znaki'),
+  email: z.string().email('Nieprawidłowy adres e-mail'),
+  phone: z.string().min(9, 'Numer telefonu jest za krótki'),
+});
+
+export function validateBookingContact(data: any) {
+  const result = contactSchema.safeParse(data);
+  if (result.success) {
+    return { valid: true, errors: [] as ValidationError[] };
+  } else {
+    const errors = result.error.issues.map(err => ({
+      field: err.path[0] as string,
+      message: err.message
+    }));
+    return { valid: false, errors };
+  }
 }
 
-export interface ValidationResult {
-  valid: boolean;
-  errors: ValidationError[];
-}
-
-function required(value: string, field: string, label: string): ValidationError | null {
-  if (!value || value.trim() === '') {
-    return { field, message: `${label} jest wymagane` };
+export function validateService(data: any) {
+  const result = serviceSchema.safeParse(data);
+  if (result.success) {
+    return { valid: true, errors: [] as ValidationError[] };
+  } else {
+    const errors = result.error.issues.map(err => ({
+      field: err.path[0] as string,
+      message: err.message
+    }));
+    return { valid: false, errors };
   }
-  return null;
-}
-
-function email(value: string, field: string): ValidationError | null {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!regex.test(value)) {
-    return { field, message: 'Podaj prawidłowy adres email' };
-  }
-  return null;
-}
-
-function phone(value: string, field: string): ValidationError | null {
-  const cleaned = value.replace(/\s/g, '');
-  const regex = /^(\+48)?[0-9]{9}$/;
-  if (!regex.test(cleaned)) {
-    return { field, message: 'Podaj prawidłowy numer telefonu (9 cyfr)' };
-  }
-  return null;
-}
-
-export function validateBookingContact(data: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-}): ValidationResult {
-  const errors: ValidationError[] = [];
-
-  const checks = [
-    required(data.firstName, 'firstName', 'Imię'),
-    required(data.lastName, 'lastName', 'Nazwisko'),
-    required(data.email, 'email', 'Email'),
-    required(data.phone, 'phone', 'Telefon'),
-  ];
-
-  checks.forEach(e => e && errors.push(e));
-
-  if (data.email) {
-    const emailError = email(data.email, 'email');
-    if (emailError) errors.push(emailError);
-  }
-
-  if (data.phone) {
-    const phoneError = phone(data.phone, 'phone');
-    if (phoneError) errors.push(phoneError);
-  }
-
-  return { valid: errors.length === 0, errors };
-}
-
-export function validateService(data: {
-  name: string;
-  description: string;
-  duration: number;
-  price: number;
-}): ValidationResult {
-  const errors: ValidationError[] = [];
-
-  const nameErr = required(data.name, 'name', 'Nazwa');
-  if (nameErr) errors.push(nameErr);
-
-  const descErr = required(data.description, 'description', 'Opis');
-  if (descErr) errors.push(descErr);
-
-  if (!data.duration || data.duration < 5) {
-    errors.push({ field: 'duration', message: 'Czas trwania musi wynosić minimum 5 minut' });
-  }
-
-  if (!data.price || data.price < 0) {
-    errors.push({ field: 'price', message: 'Cena musi być liczbą nieujemną' });
-  }
-
-  return { valid: errors.length === 0, errors };
 }
 
 export function getFieldError(errors: ValidationError[], field: string): string | undefined {

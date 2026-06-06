@@ -56,7 +56,7 @@ export function BookingSummary({ form, service, onConfirm, onEdit, submitting }:
           <div style={{ fontSize: '2.5rem' }}>{service.icon}</div>
           <div>
             <h3 style={{ fontWeight: 800, fontSize: 'var(--text-lg)', color: 'var(--text-primary)' }}>Podsumowanie wizyty</h3>
-            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Salon Fryzjerski uFisza</p>
+            <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Nocny Promil</p>
           </div>
         </div>
 
@@ -158,7 +158,7 @@ export function BookingSummary({ form, service, onConfirm, onEdit, submitting }:
       </div>
 
       <p className="hidden-mobile" style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: 'var(--text-xs)', marginTop: 'var(--space-2)', opacity: 0.6 }}>
-        Salon Fryzjerski uFisza — Dziękujemy za zaufanie!
+        Nocny Promil — Dziękujemy za zaufanie!
       </p>
 
       <style jsx>{`

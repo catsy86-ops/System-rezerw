@@ -6,7 +6,7 @@
 
 import { useState } from 'react';
 import { User, Mail, Phone, MessageSquare, ArrowRight, ShieldCheck } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { validateBookingContact, getFieldError } from '@/lib/validators';
 import type { ValidationError } from '@/lib/validators';
 
@@ -141,7 +141,7 @@ export function ContactForm({ initialData, onSubmit }: ContactFormProps) {
             id="contact-notes"
             value={data.notes}
             onChange={e => handleChange('notes', e.target.value)}
-            placeholder="np. preferowana stylizacja, alergie, specjalne życzenia..."
+            placeholder="np. domofon nie działa, proszę dzwonić, zostawić pod drzwiami..."
             className="form-input"
             rows={4}
             style={{ resize: 'vertical', background: 'var(--bg-elevated)', padding: 'var(--space-4)', fontSize: 'var(--text-sm)', fontWeight: 500 }}
@@ -162,7 +162,7 @@ export function ContactForm({ initialData, onSubmit }: ContactFormProps) {
           }}
         >
           <ShieldCheck size={20} className="text-accent" style={{ flexShrink: 0 }} />
-          <p style={{ lineHeight: 1.5 }}>Twoje dane są u nas bezpieczne. Wykorzystamy je wyłącznie w celu potwierdzenia i przypomnienia o wizycie w salonie <strong>uFisza</strong>.</p>
+          <p style={{ lineHeight: 1.5 }}>Twoje dane są u nas bezpieczne. Wykorzystamy je wyłącznie w celu realizacji i potwierdzenia zamówienia przez <strong>Nocny Promil</strong>.</p>
         </div>
       </div>
 

@@ -11,7 +11,7 @@ import { formatCurrency, formatDuration } from '@/lib/formatters';
 import { Modal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
 import { useToast } from '@/components/ui/ToastProvider';
-import { Skeleton, SkeletonCard } from '@/components/ui/Skeleton';
+import { Skeleton } from '@/components/ui/Skeleton';
 import { validateService, getFieldError } from '@/lib/validators';
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '@/lib/constants';
 import type { Service, ServiceFormData, ServiceCategory } from '@/types';
@@ -124,7 +124,7 @@ export default function ServicesPage() {
         <div>
           <h1 style={{ fontSize: 'var(--text-2xl)', fontWeight: 800, marginBottom: 'var(--space-1)' }}>Usługi</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
-            Zarządzaj ofertą salonu ({services.length} usług)
+            Zarządzaj ofertą asortymentu ({services.length} produktów)
           </p>
         </div>
         <button id="add-service-btn" className="btn btn-primary" onClick={() => openModal()}>
@@ -134,7 +134,11 @@ export default function ServicesPage() {
 
       {loading ? (
         <div className="grid-auto">
-          {[1, 2, 3, 4, 5, 6].map(i => <SkeletonCard key={i} />)}
+          {[1, 2, 3, 4, 5, 6].map(i => (
+            <div key={i} className="glass-card" style={{ padding: 'var(--space-5)', height: '180px' }}>
+              <Skeleton width="100%" height="100%" />
+            </div>
+          ))}
         </div>
       ) : (
         <div className="grid-auto">

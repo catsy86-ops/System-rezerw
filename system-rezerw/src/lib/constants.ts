@@ -2,8 +2,8 @@
 // STAŁE APLIKACJI
 // ============================================================
 
-export const APP_NAME = 'uFisza';
-export const APP_DESCRIPTION = 'Salon Fryzjerski uFisza - profesjonalne usługi fryzjerskie i stylizacja';
+export const APP_NAME = 'Nocny Promil';
+export const APP_DESCRIPTION = 'Nocny Promil - całodobowy dowóz alkoholu';
 
 export const STATUS_LABELS: Record<string, string> = {
   oczekujaca: 'Oczekująca',
@@ -21,18 +21,20 @@ export const STATUS_COLORS: Record<string, string> = {
 };
 
 export const CATEGORY_LABELS: Record<string, string> = {
-  fryzjerstwo: 'Fryzjerstwo',
-  kosmetyka: 'Kosmetyka',
-  masaz: 'Masaż',
-  paznokcie: 'Paznokcie',
+  wódka: 'Wódka',
+  piwo: 'Piwo',
+  wino: 'Wino',
+  whisky: 'Whisky',
+  przekąski: 'Przekąski',
   inne: 'Inne',
 };
 
 export const CATEGORY_ICONS: Record<string, string> = {
-  fryzjerstwo: '✂️',
-  kosmetyka: '🌿',
-  masaz: '🧘',
-  paznokcie: '💅',
+  wódka: '🧊',
+  piwo: '🍺',
+  wino: '🍷',
+  whisky: '🥃',
+  przekąski: '🥨',
   inne: '⭐',
 };
 
@@ -50,16 +52,16 @@ export const SLOT_INTERVALS = [
 ];
 
 export const BOOKING_STEPS = [
-  { id: 1, label: 'Usługa' },
-  { id: 2, label: 'Termin' },
-  { id: 3, label: 'Dane' },
+  { id: 1, label: 'Asortyment' },
+  { id: 2, label: 'Czas dostawy' },
+  { id: 3, label: 'Adres i Dane' },
   { id: 4, label: 'Podsumowanie' },
 ];
 
 export const NAV_ITEMS = [
   { href: '/panel', label: 'Dashboard', icon: 'LayoutDashboard' },
-  { href: '/panel/rezerwacje', label: 'Rezerwacje', icon: 'Calendar' },
-  { href: '/panel/uslugi', label: 'Usługi', icon: 'Scissors' },
+  { href: '/panel/rezerwacje', label: 'Zamówienia', icon: 'Calendar' },
+  { href: '/panel/uslugi', label: 'Asortyment', icon: 'Package' },
   { href: '/panel/klienci', label: 'Klienci', icon: 'Users' },
   { href: '/panel/ustawienia', label: 'Ustawienia', icon: 'Settings' },
 ];

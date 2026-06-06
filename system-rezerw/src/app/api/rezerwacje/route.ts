@@ -14,6 +14,7 @@ import {
   recalculateClientStats,
 } from '@/lib/db';
 import { isDateInPast } from '@/lib/formatters';
+import { bookingSchema } from '@/lib/validators';
 import type { Reservation, ReservationStatus } from '@/types';
 
 // GET /api/rezerwacje
@@ -66,11 +67,18 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { serviceId, date, time, firstName, lastName, email, phone, notes } = body;
-
-    if (!serviceId || !date || !time || !firstName || !lastName || !email || !phone) {
-      return NextResponse.json({ success: false, error: 'Brakujące wymagane pola' }, { status: 400 });
+    
+    // Walidacja Zod
+    const result = bookingSchema.safeParse(body);
+    if (!result.success) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Błąd walidacji danych', 
+        details: result.error.flatten().fieldErrors 
+      }, { status: 400 });
     }
+
+    const { serviceId, date, time, firstName, lastName, email, phone, notes } = result.data;
 
     if (isDateInPast(date)) {
       return NextResponse.json({ success: false, error: 'Nie można zarezerwować terminu w przeszłości' }, { status: 400 });

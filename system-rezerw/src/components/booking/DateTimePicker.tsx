@@ -14,7 +14,9 @@ import {
   getTodayString,
   isDateInPast,
   getDayOfWeek,
+  formatCurrency,
 } from '@/lib/formatters';
+
 import { DAYS_SHORT_PL, MONTHS_PL } from '@/lib/constants';
 import { generateSlots, calculateTakenSlots } from '@/lib/bookingHelpers';
 import { CalendarSkeleton } from '@/components/ui/Skeleton';
@@ -125,6 +127,13 @@ export function DateTimePicker({ service, selectedDate, selectedTime, onSelect }
     setPickedTime('');
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent, day: number) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleDayClick(day);
+    }
+  };
+
   const handleTimeClick = (slot: string) => {
     if (takenSlots.includes(slot)) return;
     setPickedTime(slot);
@@ -227,7 +236,11 @@ export function DateTimePicker({ service, selectedDate, selectedTime, onSelect }
                       key={day}
                       whileTap={!disabled ? { scale: 0.92 } : {}}
                       onClick={() => handleDayClick(day)}
+                      onKeyDown={(e) => handleKeyDown(e, day)}
                       disabled={disabled}
+                      aria-label={`Dzień ${day}, ${MONTHS_PL[viewMonth]} ${viewYear}`}
+                      aria-selected={isSelected}
+                      role="gridcell"
                       style={{
                         aspectRatio: '1',
                         display: 'flex',

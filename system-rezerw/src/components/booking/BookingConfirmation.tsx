@@ -70,7 +70,7 @@ export function BookingConfirmation({ reservationId, service, form, onReset }: B
           Wizyta zarezerwowana! 🎉
         </h1>
         <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-base)', marginBottom: 'var(--space-8)', lineHeight: 1.6 }}>
-          Dziękujemy za wybór <strong>uFisza</strong>. Twój termin został pomyślnie zarejestrowany w naszym systemie.
+          Dziękujemy za wybór <strong>Nocny Promil</strong>. Twój termin został pomyślnie zarejestrowany w naszym systemie.
         </p>
       </motion.div>
 
@@ -191,7 +191,7 @@ export function BookingConfirmation({ reservationId, service, form, onReset }: B
           <div style={{ fontWeight: 800, color: 'var(--text-primary)', fontSize: 'var(--text-sm)', marginBottom: 4 }}>Co dalej?</div>
           <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             Wysłaliśmy właśnie e-mail z potwierdzeniem na adres <strong>{form.email}</strong>. 
-            Przypomnienie SMS otrzymasz na 24h przed planowaną wizytą. Do zobaczenia w <strong>uFisza</strong>!
+            Przypomnienie SMS otrzymasz na 24h przed planowaną wizytą. Do zobaczenia w <strong>Nocny Promil</strong>!
           </p>
         </div>
       </motion.div>

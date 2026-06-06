@@ -1,11 +1,11 @@
 'use client';
 
 // ============================================================
-// STRONA GŁÓWNA — uFisza (Premium Branding)
+// STRONA GŁÓWNA — Nocny Promil (Premium Delivery)
 // ============================================================
 
 import Link from 'next/link';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import { useRef } from 'react';
 import {
   Calendar,
@@ -24,54 +24,56 @@ import {
   Sparkles,
   Zap,
   Coffee,
+  Package,
+  GlassWater,
 } from 'lucide-react';
 
-const fadeInUp = {
+const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 
-const bentoItem = {
+const bentoItem: Variants = {
   hidden: { opacity: 0, scale: 0.95 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: 'easeOut' } }
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
 };
 
 const FEATURES = [
   {
     icon: <Sparkles size={28} />,
     title: 'Najwyższa Precyzja',
-    description: 'Każdy detal ma znaczenie. Nasi styliści to mistrzowie rzemiosła fryzjerskiego.',
+    description: 'Błyskawiczna dostawa. Nasi kurierzy to mistrzowie logistyki nocnej.',
     size: 'large',
     color: 'var(--accent-primary)',
   },
   {
     icon: <Clock size={24} />,
     title: 'Twój Czas',
-    description: 'Błyskawiczna rezerwacja bez zbędnych kont.',
+    description: 'Zamówienie w mniej niż 60 sekund bez zbędnych kont.',
     size: 'small',
     color: 'var(--accent-secondary)',
   },
   {
     icon: <Shield size={24} />,
-    title: 'Bezpieczeństwo',
-    description: 'Higiena i sterylność na poziomie medycznym.',
+    title: 'Dyskrecja',
+    description: 'Prywatność i bezpieczeństwo Twojego zamówienia.',
     size: 'small',
     color: '#EC4899',
   },
   {
-    icon: <Coffee size={24} />,
-    title: 'Strefa Relaksu',
-    description: 'Najlepsza kawa i atmosfera, która pozwoli Ci odetchnąć od codzienności.',
+    icon: <GlassWater size={24} />,
+    title: 'Imprezowy Ratunek',
+    description: 'Szeroki asortyment alkoholi i przekąsek dostępny od ręki.',
     size: 'medium',
     color: '#06B6D4',
   },
 ];
 
 const SERVICES_PREVIEW = [
-  { icon: '✂️', name: 'Strzyżenie Damskie', desc: 'Personalizowane formy, które podkreślają Twoją urodę.', price: 'od 120 zł', color: '#10B981' },
-  { icon: '💈', name: 'Strzyżenie Męskie', desc: 'Klasyka i nowoczesność w perfekcyjnym wydaniu.', price: 'od 60 zł', color: '#3B82F6' },
-  { icon: '🎨', name: 'Koloryzacja Premium', desc: 'Luksusowe pigmenty i techniki rozjaśniania.', price: 'od 250 zł', color: '#F59E0B' },
-  { icon: '✨', name: 'Stylizacja', desc: 'Na wielkie wyjścia i codzienne okazje.', price: 'od 100 zł', color: '#8B5CF6' },
+  { icon: '🧊', name: 'Wódka Wyborowa', desc: 'Klasyczna wódka, dostarczana schłodzona.', price: 'od 50 zł', color: '#3B82F6' },
+  { icon: '🍺', name: 'Piwo Rzemieślnicze', desc: 'Zestaw wybranych piw z lokalnego browaru.', price: 'od 45 zł', color: '#F59E0B' },
+  { icon: '🍷', name: 'Wino Czerwone', desc: 'Wysokiej jakości wino ze szczepu Cabernet.', price: 'od 70 zł', color: '#EC4899' },
+  { icon: '🥃', name: 'Whisky Jack Daniels', desc: 'Popularna amerykańska whiskey.', price: 'od 120 zł', color: '#8B5CF6' },
 ];
 
 export default function HomePage() {
@@ -123,10 +125,10 @@ export default function HomePage() {
           </motion.div>
           <div>
             <div style={{ fontSize: 'var(--text-base)', fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '0.08em', lineHeight: 1 }}>
-              uFisza
+              Nocny Promil
             </div>
             <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: 2 }}>
-              Elite Hair Design
+              Całodobowy Dowóz Alkoholu
             </div>
           </div>
         </div>
@@ -136,7 +138,7 @@ export default function HomePage() {
             Panel Admina
           </Link>
           <Link href="/rezerwacja" className="btn btn-primary btn-sm" style={{ padding: '8px 20px', borderRadius: 'var(--radius-full)' }}>
-            Rezerwuj wizytę
+            Zamów online
           </Link>
         </div>
       </nav>
@@ -201,7 +203,7 @@ export default function HomePage() {
             }}
           >
             <Sparkles size={12} style={{ marginRight: 6 }} />
-            Odkryj nową definicję piękna w Szczecinie
+            Najszybsza dostawa w Szczecinie
           </motion.div>
 
           <motion.h1
@@ -216,9 +218,9 @@ export default function HomePage() {
               marginBottom: 'var(--space-8)',
             }}
           >
-            Kunszt fryzjerski <br />
-            <span className="text-gradient">na najwyższym</span> <br />
-            poziomie.
+            Nocny dowóz <br />
+            <span className="text-gradient">alkoholu do</span> <br />
+            Twoich drzwi.
           </motion.h1>
 
           <motion.p
@@ -233,7 +235,7 @@ export default function HomePage() {
               lineHeight: 1.6,
             }}
           >
-            W uFisza łączymy pasję z perfekcją. Tworzymy stylizacje, które nie tylko zachwycają, ale też wyrażają Twoją osobowość. 
+            W Nocny Promil dowozimy alkohol przez całą noc. Błyskawiczna dostawa, szeroki asortyment i profesjonalna obsługa. Nie przerywaj imprezy!
           </motion.p>
 
           <motion.div
@@ -243,11 +245,11 @@ export default function HomePage() {
             className="flex items-center justify-center gap-6 flex-wrap"
           >
             <Link href="/rezerwacja" className="btn btn-primary btn-lg glow-primary" style={{ borderRadius: 'var(--radius-full)', padding: '18px 40px', fontSize: 'var(--text-base)' }}>
-              Umów wizytę teraz
+              Złóż zamówienie
               <ArrowRight size={20} style={{ marginLeft: 8 }} />
             </Link>
             <Link href="#uslugi" className="btn btn-secondary btn-lg" style={{ borderRadius: 'var(--radius-full)', padding: '18px 40px', fontSize: 'var(--text-base)' }}>
-              Zobacz ofertę
+              Zobacz asortyment
             </Link>
           </motion.div>
         </motion.div>
@@ -267,7 +269,7 @@ export default function HomePage() {
         <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 'var(--space-16)' }}>
             <h2 className="text-ls-tight" style={{ fontSize: 'var(--text-4xl)', fontWeight: 900, marginBottom: 'var(--space-4)' }}>
-              Dlaczego <span className="text-gradient">uFisza</span>?
+              Dlaczego <span className="text-gradient">Nocny Promil</span>?
             </h2>
             <p style={{ color: 'var(--text-secondary)', maxWidth: 480, margin: '0 auto' }}>
               Standardy, które nas wyróżniają. Profesjonalizm w każdym calu.
@@ -294,9 +296,9 @@ export default function HomePage() {
               <div style={{ color: 'var(--accent-primary)', marginBottom: 'var(--space-4)' }}>
                 <Sparkles size={32} />
               </div>
-              <h3 style={{ fontSize: 'var(--text-2xl)', fontWeight: 800, marginBottom: 'var(--space-2)' }}>Mistrzowska Precyzja</h3>
+              <h3 style={{ fontSize: 'var(--text-2xl)', fontWeight: 800, marginBottom: 'var(--space-2)' }}>Szybkość i Precyzja</h3>
               <p style={{ color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: '400px' }}>
-                Nasz zespół składa się wyłącznie z doświadczonych stylistów, którzy regularnie podnoszą swoje kwalifikacje na międzynarodowych szkoleniach.
+                Nasz system logistyczny pozwala na optymalizację tras, dzięki czemu dostawa zajmuje zazwyczaj mniej niż 30 minut od złożenia zamówienia.
               </p>
             </motion.div>
 
@@ -312,7 +314,7 @@ export default function HomePage() {
               <div style={{ color: 'var(--accent-primary)', marginBottom: 'var(--space-4)' }}>
                 <Zap size={32} fill="currentColor" />
               </div>
-              <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 800 }}>Błyskawiczna Rezerwacja</h3>
+              <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 800 }}>Ekspresowy Koszyk</h3>
               <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginTop: 8 }}>Mniej niż 60 sekund.</p>
             </motion.div>
 
@@ -328,8 +330,8 @@ export default function HomePage() {
               <div style={{ color: '#EC4899', marginBottom: 'var(--space-4)' }}>
                 <Shield size={32} />
               </div>
-              <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 800 }}>Bezpieczeństwo</h3>
-              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginTop: 8 }}>Pełna sterylność narzędzi.</p>
+              <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 800 }}>Dyskrecja</h3>
+              <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-secondary)', marginTop: 8 }}>Anonimowe dostawy.</p>
             </motion.div>
 
             {/* Item 4 - Medium */}
@@ -352,12 +354,12 @@ export default function HomePage() {
                 color: '#06B6D4',
                 flexShrink: 0
               }}>
-                <Coffee size={40} />
+                <Package size={40} />
               </div>
               <div>
-                <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 800, marginBottom: 'var(--space-2)' }}>Czas dla Ciebie</h3>
+                <h3 style={{ fontSize: 'var(--text-xl)', fontWeight: 800, marginBottom: 'var(--space-2)' }}>Zawsze pod ręką</h3>
                 <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', lineHeight: 1.6 }}>
-                  Zatrzymaj się na moment. W uFisza dbamy nie tylko o Twoje włosy, ale i o Twoje samopoczucie. Najlepsza kawa w mieście czeka na Ciebie.
+                  Zabrakło trunków w połowie nocy? Nocny Promil dowiezie wszystko, czego potrzebujesz, aby kontynuować zabawę. Najlepszy asortyment w mieście.
                 </p>
               </div>
             </motion.div>
@@ -370,11 +372,11 @@ export default function HomePage() {
         <div style={{ maxWidth: 'var(--container-max)', margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 'var(--space-12)', flexWrap: 'wrap', gap: 'var(--space-6)' }}>
             <div>
-              <div className="badge badge-success" style={{ marginBottom: 'var(--space-4)', borderRadius: 'var(--radius-full)' }}>Nasze Specjalności</div>
-              <h2 className="text-ls-tight" style={{ fontSize: 'var(--text-4xl)', fontWeight: 900 }}>Wybrane usługi</h2>
+              <div className="badge badge-success" style={{ marginBottom: 'var(--space-4)', borderRadius: 'var(--radius-full)' }}>Top Wybory</div>
+              <h2 className="text-ls-tight" style={{ fontSize: 'var(--text-4xl)', fontWeight: 900 }}>Nasz asortyment</h2>
             </div>
             <Link href="/rezerwacja" className="btn btn-ghost" style={{ fontWeight: 600 }}>
-              Pełny cennik <ChevronRight size={16} />
+              Pełna lista <ChevronRight size={16} />
             </Link>
           </div>
 
@@ -428,9 +430,9 @@ export default function HomePage() {
       <section style={{ padding: 'var(--space-16) var(--space-8)', borderTop: '1px solid var(--border-primary)', borderBottom: '1px solid var(--border-primary)' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--space-8)', textAlign: 'center' }}>
           {[
-            { label: 'Zadowolonych klientów', value: '1,200+' },
-            { label: 'Średnia ocena', value: '4.9/5' },
-            { label: 'Lat doświadczenia', value: '8' },
+            { label: 'Zadowolonych imprezowiczów', value: '5,000+' },
+            { label: 'Średni czas dostawy', value: '25 min' },
+            { label: 'Lat na rynku', value: '5' },
           ].map(stat => (
             <div key={stat.label}>
               <div style={{ fontSize: 'var(--text-3xl)', fontWeight: 900, color: 'var(--accent-primary)', marginBottom: 4 }}>{stat.value}</div>
@@ -460,12 +462,12 @@ export default function HomePage() {
         >
           <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'var(--accent-primary-glow)', filter: 'blur(100px)', opacity: 0.5 }} />
           
-          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 900, marginBottom: 'var(--space-4)' }}>Gotowy na <span className="text-gradient">uFisza Look</span>?</h2>
+          <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 900, marginBottom: 'var(--space-4)' }}>Gotowy na <span className="text-gradient">Zamówienie</span>?</h2>
           <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-lg)', maxWidth: 600, margin: '0 auto var(--space-10)' }}>
-            Zarezerwuj swój termin online i ciesz się wyjątkową usługą. Twoje włosy w najlepszych rękach w Szczecinie.
+            Złóż zamówienie online i ciesz się błyskawiczną dostawą. Twój alkohol w najlepszych rękach kurierów w Szczecinie.
           </p>
           <Link href="/rezerwacja" className="btn btn-primary btn-lg glow-primary" style={{ borderRadius: 'var(--radius-full)', padding: '20px 50px' }}>
-            Zarezerwuj teraz wizytę
+            Zamów teraz
           </Link>
         </motion.div>
       </section>
@@ -502,21 +504,21 @@ export default function HomePage() {
               >
                 <Target size={14} color="#fff" />
               </div>
-              <span style={{ fontWeight: 800, fontSize: 'var(--text-lg)', letterSpacing: '0.05em' }}>uFisza</span>
+              <span style={{ fontWeight: 800, fontSize: 'var(--text-lg)', letterSpacing: '0.05em' }}>Nocny Promil</span>
             </div>
             <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)', lineHeight: 1.8, maxWidth: 320 }}>
-              Ekskluzywne usługi fryzjerskie. Precyzja i jakość, której szukasz. Najnowocześniejszy salon w sercu Szczecina.
+              Najszybszy dowóz alkoholu w Szczecinie. Precyzja i jakość, której szukasz. Działamy całą noc, abyś Ty nie musiał wychodzić.
             </p>
           </div>
 
           <div>
             <h4 style={{ fontWeight: 700, marginBottom: 'var(--space-6)', color: 'var(--text-primary)', fontSize: 'var(--text-sm)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              Lokalizacja
+              Kontakt
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
               {[
                 { icon: <Phone size={14} />, text: '+48 91 123 45 67' },
-                { icon: <Mail size={14} />, text: 'kontakt@ufisza.pl' },
+                { icon: <Mail size={14} />, text: 'kontakt@nocnypromil.pl' },
                 { icon: <MapPin size={14} />, text: 'ul. Łucznicza 43, Szczecin' },
               ].map(({ icon, text }) => (
                 <div key={text} className="flex items-center gap-3" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
@@ -533,16 +535,16 @@ export default function HomePage() {
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', color: 'var(--text-secondary)', fontSize: 'var(--text-sm)' }}>
               <div className="flex justify-between">
-                <span>Poniedziałek – Piątek</span>
-                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>08:00 – 20:00</span>
+                <span>Poniedziałek – Czwartek</span>
+                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>20:00 – 04:00</span>
               </div>
               <div className="flex justify-between">
-                <span>Sobota</span>
-                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>09:00 – 18:00</span>
+                <span>Piątek – Sobota</span>
+                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>20:00 – 06:00</span>
               </div>
               <div className="flex justify-between">
                 <span>Niedziela</span>
-                <span style={{ color: 'var(--status-danger)', fontWeight: 600 }}>Nieczynne</span>
+                <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>20:00 – 02:00</span>
               </div>
             </div>
           </div>
@@ -559,10 +561,10 @@ export default function HomePage() {
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-            <div>© 2026 uFisza. Wszelkie prawa zastrzeżone.</div>
+            <div>© 2026 Nocny Promil. Wszelkie prawa zastrzeżone.</div>
             <div className="flex justify-center gap-6">
               <Link href="/anuluj" style={{ color: 'var(--status-danger)', fontWeight: 600 }}>
-                Zarządzaj rezerwacją
+                Zarządzaj zamówieniem
               </Link>
               <Link href="/panel" style={{ color: 'var(--text-muted)' }}>
                 Dostęp dla personelu
